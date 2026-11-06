@@ -1,0 +1,252 @@
+
+.profile-page {
+  min-height: 100vh;
+  background: #faf7f2;
+  padding: 55px 7%;
+  color: #292526;
+}
+
+.profile-header {
+  margin-bottom: 35px;
+}
+
+.profile-header p {
+  color: #9a7b83;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.profile-header h1 {
+  font-family: Georgia, serif;
+  color: #702d43;
+  font-size: 38px;
+  font-weight: 500;
+  margin: 10px 0;
+}
+
+.profile-header span {
+  color: #887d7e;
+  font-size: 14px;
+}
+
+.profile-card {
+  max-width: 1050px;
+  margin: auto;
+  background: #fff;
+  border: 1px solid #e8e0dc;
+  border-radius: 16px;
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 55px;
+  box-shadow: 0 12px 40px rgba(65, 35, 45, 0.06);
+}
+
+.profile-photo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 25px 18px;
+  background: #faf7f2;
+  border: 1px solid #e8e0dc;
+  border-radius: 14px;
+  min-height: 340px;
+}
+
+.profile-photo {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid white;
+  box-shadow: 0 4px 20px rgba(112, 45, 67, 0.15);
+}
+
+.profile-photo-placeholder {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #e8d4d9;
+  color: #702d43;
+  font-size: 65px;
+  font-family: Georgia, serif;
+  border: 5px solid white;
+}
+
+.profile-photo-section h3 {
+  color: #702d43;
+  font-family: Georgia, serif;
+  font-size: 20px;
+  margin: 22px 0 7px;
+}
+
+.profile-photo-section p {
+  color: #8b8081;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.profile-photo-section input[type="file"] {
+  width: 100%;
+  margin: 16px 0;
+  font-size: 12px;
+}
+
+.profile-photo-section button {
+  width: 100%;
+  padding: 12px;
+  background: #702d43;
+  border: 1px solid #702d43;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.profile-photo-section button:hover {
+  background: #4e1d2e;
+}
+
+.profile-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-card form label {
+  color: #702d43;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.profile-card form input {
+  width: 100%;
+  height: 48px;
+  padding: 0 15px;
+  border: 1px solid #e2d8d5;
+  border-radius: 6px;
+  background: #fff;
+  color: #292526;
+  outline: none;
+  transition: 0.3s;
+}
+
+.profile-card form input:focus {
+  border-color: #702d43;
+  box-shadow: 0 0 0 3px rgba(112, 45, 67, 0.08);
+}
+
+.profile-card form input:disabled {
+  background: #f5f1ef;
+  color: #8b8081;
+  cursor: not-allowed;
+}
+
+.profile-card form button {
+  margin-top: 22px;
+  height: 49px;
+  background: #702d43;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.profile-card form button:hover {
+  background: #4e1d2e;
+}
+
+.profile-card form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.profile-message {
+  grid-column: 1 / -1;
+  color: #702d43;
+  background: #f7edf0;
+  padding: 13px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 30px 5%;
+  }
+
+  .profile-card {
+    grid-template-columns: 1fr;
+    padding: 22px;
+    gap: 25px;
+  }
+
+  .profile-header h1 {
+    font-size: 30px;
+  }
+  
+.address-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.address-card-actions button {
+  padding: 9px 14px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid #702d43;
+  transition: 0.3s;
+}
+
+.edit-address-btn {
+  background: #702d43;
+  color: white;
+}
+
+.edit-address-btn:hover {
+  background: #4e1d2e;
+}
+
+.delete-address-btn {
+  background: white;
+  color: #b33a4a;
+  border-color: #b33a4a !important;
+}
+
+.delete-address-btn:hover {
+  background: #b33a4a;
+  color: white;
+}
+
+.set-default-btn {
+  background: #f7edf0;
+  color: #702d43;
+}
+
+.set-default-btn:hover {
+  background: #e8d4d9;
+}
+
+.address-form-card .cancel-edit-btn {
+  margin-top: 0;
+  background: white;
+  color: #702d43;
+  border: 1px solid #702d43;
+}
+
+.address-form-card .cancel-edit-btn:hover {
+  background: #f7edf0;
+}
+
+}

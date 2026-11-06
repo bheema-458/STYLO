@@ -1,0 +1,122 @@
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+/* =================================
+   STYLO - LUXURY DESIGN SYSTEM
+================================= */
+
+:root {
+  /* Brand Colors */
+  --primary: #C98596;
+  --primary-dark: #B66F83;
+  --primary-light: #EAD5D9;
+
+  /* Secondary Colors */
+  --deep-plum: #4A2635;
+  --muted-sage: #829487;
+
+  /* Background Colors */
+  --background: #FBF6F4;
+  --surface: #FFFFFF;
+  --surface-soft: #F5EAE9;
+
+  /* Text Colors */
+  --text-primary: #30272A;
+  --text-secondary: #776C70;
+  --text-light: #FFFFFF;
+
+  /* Border */
+  --border-color: #E9DDE0;
+
+  /* Typography */
+  --heading-font: 'Playfair Display', serif;
+  --body-font: 'DM Sans', sans-serif;
+
+  /* Common Design */
+  --border-radius: 8px;
+  --card-radius: 12px;
+
+  font-family: var(--body-font);
+  color: var(--text-primary);
+  background: var(--background);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Universal Box Sizing */
+
+* {
+  box-sizing: border-box;
+}
+
+/* HTML */
+
+html {
+  margin: 0;
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+
+/* Body */
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: var(--body-font);
+  color: var(--text-primary);
+  background: var(--background);
+}
+
+/* React Root */
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Headings */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--heading-font);
+  color: var(--deep-plum);
+}
+
+/* Form Elements */
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Links */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Images */
+
+img {
+  max-width: 100%;
+}
+
+/* Selection */
+
+::selection {
+  background: var(--primary-light);
+  color: var(--deep-plum);
+}
+
+/* Keyboard Focus */
+
+:focus-visible {
+  outline: 2px solid var(--primary-dark);
+  outline-offset: 3px;
+}

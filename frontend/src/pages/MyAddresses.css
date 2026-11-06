@@ -1,0 +1,178 @@
+
+.addresses-page {
+  min-height: 100vh;
+  background: #faf7f2;
+  padding: 55px 7%;
+  color: #292526;
+}
+
+.addresses-header {
+  margin-bottom: 35px;
+}
+
+.addresses-header > p {
+  color: #9a7b83;
+  font-size: 12px;
+  letter-spacing: 3px;
+}
+
+.addresses-header h1 {
+  color: #702d43;
+  font-family: Georgia, serif;
+  font-size: 38px;
+  font-weight: 500;
+  margin: 10px 0;
+}
+
+.addresses-header span {
+  color: #887d7e;
+  font-size: 14px;
+}
+
+.addresses-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  max-width: 1150px;
+  margin: auto;
+  align-items: start;
+}
+
+.address-form-card,
+.saved-addresses {
+  background: white;
+  border: 1px solid #e8e0dc;
+  border-radius: 14px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(65, 35, 45, 0.05);
+}
+
+.address-form-card h2,
+.saved-addresses h2 {
+  color: #702d43;
+  font-family: Georgia, serif;
+  font-size: 23px;
+  font-weight: 500;
+  margin: 0 0 22px;
+}
+
+.address-form-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.address-form-card label {
+  color: #702d43;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.address-form-card input:not([type="checkbox"]),
+.address-form-card textarea {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid #e2d8d5;
+  border-radius: 6px;
+  outline: none;
+  background: white;
+  color: #292526;
+}
+
+.address-form-card textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.address-form-card input:focus,
+.address-form-card textarea:focus {
+  border-color: #702d43;
+  box-shadow: 0 0 0 3px rgba(112, 45, 67, 0.08);
+}
+
+.address-form-card .default-address-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 400;
+  color: #51494a;
+}
+
+.address-form-card button {
+  margin-top: 15px;
+  padding: 14px;
+  background: #702d43;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.address-form-card button:hover {
+  background: #4e1d2e;
+}
+
+.address-form-card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.address-card {
+  border: 1px solid #e8e0dc;
+  border-radius: 9px;
+  padding: 20px;
+  margin-bottom: 15px;
+  background: #fffdfb;
+}
+
+.address-card h3 {
+  color: #702d43;
+  margin: 0 0 10px;
+}
+
+.address-card p {
+  color: #756b6c;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 5px 0;
+}
+
+.default-badge {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: #f7edf0;
+  color: #702d43;
+  font-size: 12px;
+}
+
+.address-message {
+  max-width: 1150px;
+  margin: 20px auto;
+  padding: 12px;
+  background: #f7edf0;
+  color: #702d43;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .addresses-page {
+    padding: 30px 5%;
+  }
+
+  .addresses-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .addresses-header h1 {
+    font-size: 30px;
+  }
+
+  .address-form-card,
+  .saved-addresses {
+    padding: 22px;
+  }
+}

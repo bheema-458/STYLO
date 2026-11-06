@@ -1,0 +1,102 @@
+.verify-container {
+  width: 100%;
+  max-width: 430px;
+  margin: auto;
+  padding: 30px 0;
+  text-align: center;
+}
+
+.verify-container h1 {
+  font-size: 30px;
+  color: #292526;
+  margin-bottom: 12px;
+}
+
+.verify-subtitle {
+  color: #777;
+  margin-bottom: 8px;
+}
+
+.verify-email {
+  color: #702D43;
+  font-weight: 600;
+  margin-bottom: 30px;
+  word-break: break-word;
+}
+
+.verify-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: left;
+}
+
+.verify-container form label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #292526;
+}
+
+.verify-container form input {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #E8E0DC;
+  border-radius: 6px;
+  font-size: 20px;
+  letter-spacing: 8px;
+  text-align: center;
+  outline: none;
+}
+
+.verify-container form input:focus {
+  border-color: #702D43;
+}
+
+.verify-container form button {
+  width: 100%;
+  padding: 14px;
+  background: #702D43;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.verify-container form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.verify-error {
+  color: #d32f2f;
+  font-size: 13px;
+}
+
+.verify-success {
+  color: green;
+  font-size: 13px;
+}
+
+.resend-text {
+  margin-top: 25px;
+  font-size: 14px;
+  color: #777;
+}
+
+.resend-text button {
+  border: none;
+  background: none;
+  color: #702D43;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.verify-container > a {
+  display: inline-block;
+  margin-top: 20px;
+  color: #702D43;
+  text-decoration: none;
+  font-size: 14px;
+}

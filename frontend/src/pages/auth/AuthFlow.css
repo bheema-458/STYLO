@@ -1,0 +1,140 @@
+.auth-flow-container,
+.verify-container {
+  width: 100%;
+  max-width: 430px;
+  margin: auto;
+  padding: 30px 0;
+}
+
+.auth-flow-container h1,
+.verify-container h1 {
+  font-size: 30px;
+  color: #292526;
+  margin-bottom: 12px;
+}
+
+.auth-flow-subtitle,
+.verify-subtitle {
+  color: #777;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.auth-flow-email,
+.verify-email {
+  color: #702D43;
+  font-weight: 600;
+  margin-bottom: 25px;
+  word-break: break-word;
+}
+
+.auth-flow-container form,
+.verify-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-flow-container form label,
+.verify-container form label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #292526;
+}
+
+.auth-flow-container form input,
+.verify-container form input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #E8E0DC;
+  border-radius: 6px;
+  font-size: 15px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.verify-container form input {
+  font-size: 20px;
+  letter-spacing: 8px;
+  text-align: center;
+}
+
+.auth-flow-container form input:focus,
+.verify-container form input:focus {
+  border-color: #702D43;
+}
+
+.auth-flow-container form button,
+.verify-container form button {
+  width: 100%;
+  padding: 14px;
+  background: #702D43;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.auth-flow-container form button:hover,
+.verify-container form button:hover {
+  background: #542033;
+}
+
+.auth-flow-container form button:disabled,
+.verify-container form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-flow-error,
+.verify-error {
+  color: #d32f2f;
+  font-size: 13px;
+}
+
+.auth-flow-success,
+.verify-success {
+  color: green;
+  font-size: 13px;
+}
+
+.auth-flow-link {
+  text-align: center;
+  margin-top: 22px;
+  font-size: 14px;
+  color: #777;
+}
+
+.auth-flow-link a,
+.verify-container > a {
+  color: #702D43;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.verify-container {
+  text-align: center;
+}
+
+.resend-text {
+  margin-top: 25px;
+  font-size: 14px;
+  color: #777;
+}
+
+.resend-text button {
+  border: none;
+  background: none;
+  color: #702D43;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.verify-container > a {
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 14px;
+}
