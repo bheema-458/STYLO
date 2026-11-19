@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'products.apps.ProductsConfig',
     'orders',
     'cart',
-    'wishlist',
+    'wishlist.apps.WishlistConfig',
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
@@ -99,7 +99,8 @@ DATABASES = {
     }
 }
 
-
+RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
 
 # Password validation
 # https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators

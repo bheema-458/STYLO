@@ -1,11 +1,11 @@
 
 from django.shortcuts import get_object_or_404
-from django.db import transaction
+from django.db import transaction, IntegrityError
 
+from rest_framework import status, generics, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
 from rest_framework.exceptions import ValidationError
 
 from products.models import Product
@@ -15,6 +15,7 @@ from .models import (
     WishlistItem,
     PriceAlert,
     StockAlert,
+    Notification,
 )
 
 from .serializers import (
@@ -22,33 +23,45 @@ from .serializers import (
     WishlistItemSerializer,
     PriceAlertSerializer,
     StockAlertSerializer,
+    NotificationSerializer,
 )
 
 
-# ----------------------------------
-# Wishlist Helper
-# ----------------------------------
+# ==========================================================
+# WISHLIST HELPER
+# ==========================================================
 
 def get_user_wishlist(user):
-    wishlist, created = Wishlist.objects.get_or_create(user=user)
+
+    wishlist, created = Wishlist.objects.get_or_create(
+        user=user
+    )
+
     return wishlist
 
 
-# ----------------------------------
-# Wishlist View
-# ----------------------------------
+# ==========================================================
+# 1. VIEW CUSTOMER WISHLIST
+# ==========================================================
 
 class WishlistView(APIView):
+
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+
         wishlist = get_user_wishlist(request.user)
 
-        wishlist = Wishlist.objects.prefetch_related(
-            "items__product__category",
-            "items__product__images",
-            "items__product__variants__color",
-        ).get(pk=wishlist.pk)
+        wishlist = (
+            Wishlist.objects
+            .prefetch_related(
+                "items__product__category",
+                "items__product__images",
+                "items__product__variants__color",
+                "items__product__variants__size",
+            )
+            .get(pk=wishlist.pk)
+        )
 
         serializer = WishlistSerializer(wishlist)
 
@@ -58,38 +71,69 @@ class WishlistView(APIView):
         )
 
 
-# ----------------------------------
-# Add Product to Wishlist
-# ----------------------------------
+# ==========================================================
+# 2. ADD PRODUCT TO WISHLIST
+# ==========================================================
 
 class WishlistItemListCreateView(APIView):
+
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
+
         product_id = request.data.get("product_id")
 
-        if not product_id:
+        if product_id is None:
+
             raise ValidationError({
                 "product_id": "Product ID is required."
             })
 
+        try:
+
+            product_id = int(product_id)
+
+            if product_id <= 0:
+                raise ValueError
+
+        except (TypeError, ValueError):
+
+            raise ValidationError({
+                "product_id": "Enter a valid product ID."
+            })
+
+        # Only active and published products can be wishlisted
         product = get_object_or_404(
             Product.objects.select_related("category"),
             pk=product_id,
             is_active=True,
-            is_published=True,
             is_deleted=False,
+            is_published=True,
+            publication_status="published",
             category__is_active=True,
             category__is_deleted=False,
         )
 
         wishlist = get_user_wishlist(request.user)
 
-        with transaction.atomic():
-            item, created = WishlistItem.objects.get_or_create(
+        try:
+
+            with transaction.atomic():
+
+                item, created = WishlistItem.objects.get_or_create(
+                    wishlist=wishlist,
+                    product=product
+                )
+
+        except IntegrityError:
+
+            # Handles simultaneous duplicate requests
+            item = WishlistItem.objects.get(
                 wishlist=wishlist,
-                product=product,
+                product=product
             )
+
+            created = False
 
         serializer = WishlistItemSerializer(item)
 
@@ -110,14 +154,16 @@ class WishlistItemListCreateView(APIView):
         )
 
 
-# ----------------------------------
-# Remove Product from Wishlist
-# ----------------------------------
+# ==========================================================
+# 3. REMOVE PRODUCT FROM WISHLIST
+# ==========================================================
 
 class WishlistItemDetailView(APIView):
+
     permission_classes = [IsAuthenticated]
 
     def get_object(self, request, pk):
+
         wishlist = get_user_wishlist(request.user)
 
         return get_object_or_404(
@@ -127,30 +173,41 @@ class WishlistItemDetailView(APIView):
         )
 
     def delete(self, request, pk):
+
         item = self.get_object(request, pk)
+
         item.delete()
 
         return Response(
-            {"message": "Product removed from wishlist successfully."},
+            {
+                "message": "Product removed from wishlist successfully."
+            },
             status=status.HTTP_200_OK
         )
 
 
-# ----------------------------------
-# Price Alert List and Create
-# ----------------------------------
+# ==========================================================
+# 4. PRICE ALERT LIST AND CREATE
+# ==========================================================
 
 class PriceAlertListCreateView(APIView):
+
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        alerts = PriceAlert.objects.filter(
-            user=request.user,
-            is_active=True
-        ).select_related(
-            "variant",
-            "variant__product",
-            "variant__color"
+
+        alerts = (
+            PriceAlert.objects
+            .filter(
+                user=request.user,
+                is_active=True
+            )
+            .select_related(
+                "variant",
+                "variant__product",
+                "variant__color",
+                "variant__size",
+            )
         )
 
         serializer = PriceAlertSerializer(
@@ -164,9 +221,14 @@ class PriceAlertListCreateView(APIView):
         )
 
     def post(self, request):
-        serializer = PriceAlertSerializer(data=request.data)
 
-        serializer.is_valid(raise_exception=True)
+        serializer = PriceAlertSerializer(
+            data=request.data
+        )
+
+        serializer.is_valid(
+            raise_exception=True
+        )
 
         variant = serializer.validated_data["variant"]
 
@@ -177,6 +239,7 @@ class PriceAlertListCreateView(APIView):
         ).exists()
 
         if already_exists:
+
             return Response(
                 {
                     "message": (
@@ -190,19 +253,24 @@ class PriceAlertListCreateView(APIView):
         serializer.save(user=request.user)
 
         return Response(
-            serializer.data,
+            {
+                "message": "Price alert created successfully.",
+                "alert": serializer.data
+            },
             status=status.HTTP_201_CREATED
         )
 
 
-# ----------------------------------
-# Deactivate Price Alert
-# ----------------------------------
+# ==========================================================
+# 5. DEACTIVATE PRICE ALERT
+# ==========================================================
 
 class PriceAlertDetailView(APIView):
+
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, pk):
+
         alert = get_object_or_404(
             PriceAlert,
             pk=pk,
@@ -211,8 +279,12 @@ class PriceAlertDetailView(APIView):
         )
 
         alert.is_active = False
+
         alert.save(
-            update_fields=["is_active", "updated_at"]
+            update_fields=[
+                "is_active",
+                "updated_at"
+            ]
         )
 
         return Response(
@@ -223,21 +295,28 @@ class PriceAlertDetailView(APIView):
         )
 
 
-# ----------------------------------
-# Stock Alert List and Create
-# ----------------------------------
+# ==========================================================
+# 6. STOCK ALERT LIST AND CREATE
+# ==========================================================
 
 class StockAlertListCreateView(APIView):
+
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        alerts = StockAlert.objects.filter(
-            user=request.user,
-            is_active=True
-        ).select_related(
-            "variant",
-            "variant__product",
-            "variant__color"
+
+        alerts = (
+            StockAlert.objects
+            .filter(
+                user=request.user,
+                is_active=True
+            )
+            .select_related(
+                "variant",
+                "variant__product",
+                "variant__color",
+                "variant__size",
+            )
         )
 
         serializer = StockAlertSerializer(
@@ -251,9 +330,14 @@ class StockAlertListCreateView(APIView):
         )
 
     def post(self, request):
-        serializer = StockAlertSerializer(data=request.data)
 
-        serializer.is_valid(raise_exception=True)
+        serializer = StockAlertSerializer(
+            data=request.data
+        )
+
+        serializer.is_valid(
+            raise_exception=True
+        )
 
         variant = serializer.validated_data["variant"]
 
@@ -264,6 +348,7 @@ class StockAlertListCreateView(APIView):
         ).exists()
 
         if already_exists:
+
             return Response(
                 {
                     "message": (
@@ -277,19 +362,24 @@ class StockAlertListCreateView(APIView):
         serializer.save(user=request.user)
 
         return Response(
-            serializer.data,
+            {
+                "message": "Stock alert created successfully.",
+                "alert": serializer.data
+            },
             status=status.HTTP_201_CREATED
         )
 
 
-# ----------------------------------
-# Deactivate Stock Alert
-# ----------------------------------
+# ==========================================================
+# 7. DEACTIVATE STOCK ALERT
+# ==========================================================
 
 class StockAlertDetailView(APIView):
+
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, pk):
+
         alert = get_object_or_404(
             StockAlert,
             pk=pk,
@@ -298,11 +388,90 @@ class StockAlertDetailView(APIView):
         )
 
         alert.is_active = False
-        alert.save(update_fields=["is_active"])
+
+        alert.save(
+            update_fields=["is_active"]
+        )
 
         return Response(
             {
                 "message": "Stock alert deactivated successfully."
+            },
+            status=status.HTTP_200_OK
+        )
+
+
+# ==========================================================
+# 8. NOTIFICATION LIST API
+# ==========================================================
+
+class NotificationListView(generics.ListAPIView):
+
+    serializer_class = NotificationSerializer
+
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    def get_queryset(self):
+
+        return Notification.objects.filter(
+            user=self.request.user
+        ).order_by("-created_at")
+
+
+# ==========================================================
+# 9. UNREAD NOTIFICATION COUNT
+# ==========================================================
+
+class UnreadNotificationCountView(APIView):
+
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    def get(self, request):
+
+        count = Notification.objects.filter(
+            user=request.user,
+            is_read=False
+        ).count()
+
+        return Response(
+            {
+                "unread_count": count
+            },
+            status=status.HTTP_200_OK
+        )
+
+
+# ==========================================================
+# 10. MARK NOTIFICATION AS READ
+# ==========================================================
+
+class MarkNotificationReadView(APIView):
+
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    def patch(self, request, pk):
+
+        notification = get_object_or_404(
+            Notification,
+            pk=pk,
+            user=request.user
+        )
+
+        notification.is_read = True
+
+        notification.save(
+            update_fields=["is_read"]
+        )
+
+        return Response(
+            {
+                "message": "Notification marked as read."
             },
             status=status.HTTP_200_OK
         )

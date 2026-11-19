@@ -9,6 +9,9 @@ from .views import (
     PriceAlertDetailView,
     StockAlertListCreateView,
     StockAlertDetailView,
+    NotificationListView,
+    UnreadNotificationCountView,
+    MarkNotificationReadView,
 )
 
 urlpatterns = [
@@ -56,4 +59,23 @@ urlpatterns = [
         StockAlertDetailView.as_view(),
         name="stock-alert-detail"
     ),
+
+    path(
+    "notifications/",
+    NotificationListView.as_view(),
+    name="notification-list"
+),
+
+    path(
+    "notifications/unread-count/",
+    UnreadNotificationCountView.as_view(),
+    name="notification-unread-count"
+),
+
+    path(
+    "notifications/<int:pk>/read/",
+    MarkNotificationReadView.as_view(),
+    name="notification-mark-read"
+),
+
 ]

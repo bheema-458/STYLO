@@ -1,7 +1,7 @@
 
 from django.core.management.base import BaseCommand
 
-from wishlist.services import check_all_alerts
+from STYLO.backend.wishlist.notification_services import check_all_alerts
 
 
 class Command(BaseCommand):

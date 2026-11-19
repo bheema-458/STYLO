@@ -15,9 +15,9 @@ from .models import (
 )
 
 
-# ==========================================
+# ==========================================================
 # 1. CATEGORY SERIALIZER
-# ==========================================
+# ==========================================================
 
 class CategorySerializer(serializers.ModelSerializer):
 
@@ -27,6 +27,7 @@ class CategorySerializer(serializers.ModelSerializer):
     )
 
     class Meta:
+
         model = Category
 
         fields = [
@@ -111,13 +112,14 @@ class CategorySerializer(serializers.ModelSerializer):
         return value
 
 
-# ==========================================
+# ==========================================================
 # 2. COLOR SERIALIZER
-# ==========================================
+# ==========================================================
 
 class ColorSerializer(serializers.ModelSerializer):
 
     class Meta:
+
         model = Color
 
         fields = [
@@ -177,13 +179,14 @@ class ColorSerializer(serializers.ModelSerializer):
         return value
 
 
-# ==========================================
+# ==========================================================
 # 3. SIZE SERIALIZER
-# ==========================================
+# ==========================================================
 
 class SizeSerializer(serializers.ModelSerializer):
 
     class Meta:
+
         model = Size
 
         fields = [
@@ -232,10 +235,9 @@ class SizeSerializer(serializers.ModelSerializer):
         return value
 
 
-# ==========================================
+# ==========================================================
 # 4. PRODUCT IMAGE SERIALIZER
-# ==========================================
-
+# ==========================================================
 
 class ProductImageSerializer(serializers.ModelSerializer):
 
@@ -249,6 +251,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
 
     class Meta:
+
         model = ProductImage
 
         fields = [
@@ -285,7 +288,10 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
     def get_image_url(self, obj):
 
-        if obj.image:
+        if not obj.image:
+            return None
+
+        try:
 
             request = self.context.get("request")
 
@@ -296,7 +302,9 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
             return obj.image.url
 
-        return None
+        except (ValueError, AttributeError):
+
+            return None
 
     def validate(self, attrs):
 
@@ -350,9 +358,9 @@ class ProductImageSerializer(serializers.ModelSerializer):
         return attrs
 
 
-# ==========================================
+# ==========================================================
 # 5. PRODUCT VARIANT SERIALIZER
-# ==========================================
+# ==========================================================
 
 class ProductVariantSerializer(serializers.ModelSerializer):
 
@@ -382,7 +390,10 @@ class ProductVariantSerializer(serializers.ModelSerializer):
 
     discount_percentage = serializers.SerializerMethodField()
 
+    image_url = serializers.SerializerMethodField()
+
     class Meta:
+
         model = ProductVariant
 
         fields = [
@@ -399,6 +410,7 @@ class ProductVariantSerializer(serializers.ModelSerializer):
             "sale_price",
             "current_price",
             "discount_percentage",
+            "image_url",
             "stock",
             "is_in_stock",
             "is_active",
@@ -410,16 +422,20 @@ class ProductVariantSerializer(serializers.ModelSerializer):
             "id",
             "current_price",
             "discount_percentage",
+            "image_url",
             "is_in_stock",
             "created_at",
             "updated_at",
         ]
 
+    # ------------------------------------------------------
     # DISCOUNT CALCULATION
+    # ------------------------------------------------------
 
     def get_discount_percentage(self, obj):
 
         regular_price = obj.regular_price
+
         sale_price = obj.sale_price
 
         if regular_price is None or regular_price <= 0:
@@ -443,7 +459,48 @@ class ProductVariantSerializer(serializers.ModelSerializer):
             )
         )
 
+    # ------------------------------------------------------
+    # VARIANT IMAGE URL
+    # ------------------------------------------------------
+
+    def get_image_url(self, obj):
+
+        # First preference: variant-specific primary image
+        image = ProductImage.objects.filter(
+            variant=obj,
+            is_primary=True
+        ).first()
+
+        # Fallback: product-level primary image
+        if not image:
+
+            image = ProductImage.objects.filter(
+                product=obj.product,
+                variant__isnull=True,
+                is_primary=True
+            ).first()
+
+        if not image or not image.image:
+            return None
+
+        try:
+
+            request = self.context.get("request")
+
+            if request:
+                return request.build_absolute_uri(
+                    image.image.url
+                )
+
+            return image.image.url
+
+        except (ValueError, AttributeError):
+
+            return None
+
+    # ------------------------------------------------------
     # PRODUCT VALIDATION
+    # ------------------------------------------------------
 
     def validate_product(self, value):
 
@@ -459,7 +516,9 @@ class ProductVariantSerializer(serializers.ModelSerializer):
 
         return value
 
+    # ------------------------------------------------------
     # COLOR VALIDATION
+    # ------------------------------------------------------
 
     def validate_color(self, value):
 
@@ -475,7 +534,9 @@ class ProductVariantSerializer(serializers.ModelSerializer):
 
         return value
 
+    # ------------------------------------------------------
     # SIZE VALIDATION
+    # ------------------------------------------------------
 
     def validate_size(self, value):
 
@@ -491,7 +552,9 @@ class ProductVariantSerializer(serializers.ModelSerializer):
 
         return value
 
+    # ------------------------------------------------------
     # SKU VALIDATION
+    # ------------------------------------------------------
 
     def validate_sku(self, value):
 
@@ -518,7 +581,9 @@ class ProductVariantSerializer(serializers.ModelSerializer):
 
         return value
 
+    # ------------------------------------------------------
     # MAIN VALIDATION
+    # ------------------------------------------------------
 
     def validate(self, attrs):
 
@@ -550,6 +615,7 @@ class ProductVariantSerializer(serializers.ModelSerializer):
         # PRICE VALIDATION
 
         if regular_price is not None and regular_price <= 0:
+
             raise serializers.ValidationError({
                 "regular_price": (
                     "Regular price must be greater than zero."
@@ -559,6 +625,7 @@ class ProductVariantSerializer(serializers.ModelSerializer):
         if sale_price is not None:
 
             if sale_price <= 0:
+
                 raise serializers.ValidationError({
                     "sale_price": (
                         "Sale price must be greater than zero."
@@ -566,6 +633,7 @@ class ProductVariantSerializer(serializers.ModelSerializer):
                 })
 
             if regular_price is not None and sale_price >= regular_price:
+
                 raise serializers.ValidationError({
                     "sale_price": (
                         "Sale price must be lower than regular price."
@@ -575,11 +643,13 @@ class ProductVariantSerializer(serializers.ModelSerializer):
         # PRODUCT VALIDATION
 
         if product and product.is_deleted:
+
             raise serializers.ValidationError({
                 "product": "Deleted product cannot be selected."
             })
 
         if product and not product.is_active:
+
             raise serializers.ValidationError({
                 "product": "Inactive product cannot be selected."
             })
@@ -587,11 +657,13 @@ class ProductVariantSerializer(serializers.ModelSerializer):
         # COLOR VALIDATION
 
         if color and color.is_deleted:
+
             raise serializers.ValidationError({
                 "color": "Deleted color cannot be selected."
             })
 
         if color and not color.is_active:
+
             raise serializers.ValidationError({
                 "color": "Inactive color cannot be selected."
             })
@@ -599,11 +671,13 @@ class ProductVariantSerializer(serializers.ModelSerializer):
         # SIZE VALIDATION
 
         if size and size.is_deleted:
+
             raise serializers.ValidationError({
                 "size": "Deleted size cannot be selected."
             })
 
         if size and not size.is_active:
+
             raise serializers.ValidationError({
                 "size": "Inactive size cannot be selected."
             })
@@ -624,6 +698,7 @@ class ProductVariantSerializer(serializers.ModelSerializer):
                 )
 
             if queryset.exists():
+
                 raise serializers.ValidationError({
                     "size": (
                         "This product already has a variant "
@@ -634,9 +709,9 @@ class ProductVariantSerializer(serializers.ModelSerializer):
         return attrs
 
 
-# ==========================================
+# ==========================================================
 # 6. PRODUCT SERIALIZER
-# ==========================================
+# ==========================================================
 
 class ProductSerializer(serializers.ModelSerializer):
 
@@ -656,6 +731,7 @@ class ProductSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
+
         model = Product
 
         fields = [
@@ -686,7 +762,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "slug",
             "images",
             "variants",
-           "is_published",
+            "is_published",
             "published_at",
             "is_deleted",
             "deleted_at",
@@ -701,6 +777,7 @@ class ProductSerializer(serializers.ModelSerializer):
         value = value.strip()
 
         if not value:
+
             raise serializers.ValidationError(
                 "Product name cannot be empty."
             )
@@ -712,11 +789,13 @@ class ProductSerializer(serializers.ModelSerializer):
     def validate_category(self, value):
 
         if value.is_deleted:
+
             raise serializers.ValidationError(
                 "Deleted category cannot be selected."
             )
 
         if not value.is_active:
+
             raise serializers.ValidationError(
                 "Inactive category cannot be selected."
             )
@@ -728,6 +807,7 @@ class ProductSerializer(serializers.ModelSerializer):
     def validate_highlights(self, value):
 
         if not isinstance(value, list):
+
             raise serializers.ValidationError(
                 "Highlights must be a list."
             )
@@ -737,6 +817,7 @@ class ProductSerializer(serializers.ModelSerializer):
         for item in value:
 
             if not isinstance(item, str):
+
                 raise serializers.ValidationError(
                     "Each highlight must be a text value."
                 )
@@ -749,13 +830,14 @@ class ProductSerializer(serializers.ModelSerializer):
         return cleaned_highlights
 
 
-# ==========================================
+# ==========================================================
 # 7. PRODUCT PRICE HISTORY SERIALIZER
-# ==========================================
+# ==========================================================
 
 class ProductPriceHistorySerializer(serializers.ModelSerializer):
 
     class Meta:
+
         model = ProductPriceHistory
 
         fields = [
