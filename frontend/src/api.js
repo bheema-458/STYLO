@@ -5,7 +5,8 @@ import axios from "axios";
 // 1. BASE CONFIGURATION
 // ========================================
 
-const BASE_URL = "http://127.0.0.1:8000/api/";
+const BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/api/";
 
 const createApiInstance = () => {
   return axios.create({
@@ -202,9 +203,7 @@ const setupInterceptors = (api, auth) => {
 
         originalRequest.headers = originalRequest.headers || {};
 
-        originalRequest.headers.Authorization =
-          `Bearer ${newAccessToken}`;
-
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         // Retry the original request
         return api(originalRequest);
       } catch (refreshError) {
