@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../api";
+import { adminApi } from "../../api";
 import "./AdminLogin.css";
 
 function AdminLogin() {
@@ -17,47 +17,80 @@ function AdminLogin() {
     e.preventDefault();
 
     setError("");
+
+    if (!email.trim() || !password) {
+      setError("Please enter your email and password.");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const response = await api.post("auth/login/", {
-        email: email.trim(),
-        password,
-      });
+      // STEP 1: Authenticate admin credentials
+      const loginResponse = await adminApi.post(
+        "auth/login/",
+        {
+          email: email.trim().toLowerCase(),
+          password,
+        }
+      );
 
-      const { access, refresh } = response.data;
+      const { access, refresh } = loginResponse.data || {};
 
-      localStorage.setItem("access", access);
-      localStorage.setItem("refresh", refresh);
+      // STEP 2: Validate tokens
+      if (!access || !refresh) {
+        throw new Error(
+          "Login response does not contain valid tokens."
+        );
+      }
 
-      await api.get("auth/admin/users/", {
-        headers: {
-          Authorization: `Bearer ${access}`,
-        },
-      });
+      // STEP 3: Save ADMIN tokens separately
+      localStorage.setItem("admin_access", access);
+      localStorage.setItem("admin_refresh", refresh);
 
+      // STEP 4: Verify admin permission
+      // adminApi automatically sends admin_access
+      await adminApi.get("auth/admin/users/");
+
+      // STEP 5: Notify components
+      window.dispatchEvent(new Event("authChanged"));
+
+      // STEP 6: Navigate to Admin Dashboard
       navigate("/admin/dashboard", { replace: true });
 
     } catch (err) {
-      console.log(
+      console.error(
         "ADMIN LOGIN ERROR:",
-        err.response?.data
+        err.response?.data || err.message
       );
 
-      console.log(
-        "STATUS:",
-        err.response?.status
-      );
+      const status = err.response?.status;
 
-      localStorage.removeItem("access");
-      localStorage.removeItem("refresh");
+      // Remove ONLY admin tokens
+      // Never remove customer tokens here
+      localStorage.removeItem("admin_access");
+      localStorage.removeItem("admin_refresh");
 
-      setError(
-        err.response?.data?.detail ||
-        JSON.stringify(err.response?.data) ||
-        err.message ||
-        "Login failed. Please try again."
-      );
+      if (status === 403) {
+        setError(
+          "This account does not have administrator permission."
+        );
+      } else if (status === 401) {
+        setError(
+          "Authentication failed. Please check your credentials."
+        );
+      } else if (!err.response) {
+        setError(
+          "Unable to connect to the server. Please check your backend."
+        );
+      } else {
+        setError(
+          err.response?.data?.detail ||
+          err.response?.data?.message ||
+          err.message ||
+          "Admin login failed. Please try again."
+        );
+      }
 
     } finally {
       setLoading(false);
@@ -66,14 +99,11 @@ function AdminLogin() {
 
   return (
     <div className="admin-login-page">
-
       <div className="admin-login-card">
 
-        <div className="admin-login-brand">
-          STYLO
-        </div>
+        <div className="admin-login-brand">STYLO</div>
 
-        <div className="admin-login-line"></div>
+        <div className="admin-login-line" />
 
         <p className="admin-login-label">
           ADMINISTRATION
@@ -82,65 +112,94 @@ function AdminLogin() {
         <h1>Welcome Back</h1>
 
         <p className="admin-login-subtitle">
-          Sign in to manage your store.
+          Sign in to access your admin dashboard.
         </p>
 
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleLogin} noValidate>
 
-          <label>Email Address</label>
-
-          <input
-            type="email"
-            placeholder="Enter admin email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-
-          <label>Password</label>
-
-          <div className="admin-password-wrapper">
+          {/* EMAIL */}
+          <div className="admin-input-group">
+            <label htmlFor="admin-email">
+              Email Address
+            </label>
 
             <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              id="admin-email"
+              type="email"
+              placeholder="admin@stylo.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={loading}
+              autoComplete="username"
             />
-
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? "Hide" : "Show"}
-            </button>
-
           </div>
 
-          <div className="admin-forgot-password">
+          {/* PASSWORD */}
+          <div className="admin-input-group">
+            <label htmlFor="admin-password">
+              Password
+            </label>
 
+            <div className="admin-password-wrapper">
+              <input
+                id="admin-password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={loading}
+                autoComplete="current-password"
+              />
+
+              <button
+                type="button"
+                className="admin-password-toggle"
+                onClick={() =>
+                  setShowPassword((previous) => !previous)
+                }
+                disabled={loading}
+                tabIndex={-1}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+          </div>
+
+          {/* FORGOT PASSWORD */}
+          <div className="admin-forgot-password">
             <button
               type="button"
-              onClick={() => navigate("/admin/forgot-password")}
+              className="admin-forgot-btn"
+              onClick={() =>
+                navigate("/admin/forgot-password")
+              }
+              disabled={loading}
             >
               Forgot Password?
             </button>
-
           </div>
 
+          {/* ERROR */}
           {error && (
-            <p className="admin-login-error">
+            <div
+              className="admin-login-error"
+              role="alert"
+            >
               {error}
-            </p>
+            </div>
           )}
 
+          {/* SUBMIT */}
           <button
             type="submit"
             className="admin-login-button"
             disabled={loading}
           >
-            {loading ? "Signing in..." : "Sign In"}
+            {loading
+              ? "VERIFYING..."
+              : "SIGN IN TO DASHBOARD"}
           </button>
 
         </form>
@@ -150,7 +209,6 @@ function AdminLogin() {
         </p>
 
       </div>
-
     </div>
   );
 }

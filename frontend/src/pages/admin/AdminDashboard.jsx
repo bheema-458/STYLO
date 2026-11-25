@@ -1,102 +1,165 @@
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import api from "../../api";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import {
+  LayoutDashboard,
+  Users,
+  Tags,
+  Palette,
+  Ruler,
+  Package,
+  Layers,
+  ShoppingBag,
+  RotateCcw,
+  LogOut,
+  Menu,
+  X,
+  Search,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+
+import { adminApi } from "../../api";
 import "./AdminDashboard.css";
 
 function AdminDashboard() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [users, setUsers] = useState([]);
-  const [count, setCount] = useState(0);
-  const [next, setNext] = useState(null);
-  const [previous, setPrevious] = useState(null);
-  const [page, setPage] = useState(1);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const access = localStorage.getItem("access");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const fetchUsers = async (pageNumber = 1, searchValue = search) => {
-    setLoading(true);
-    setError("");
+  // Admin token ഉണ്ടോ എന്ന് പരിശോധിക്കുക
+  useEffect(() => {
+    const adminToken = localStorage.getItem("admin_access");
 
+    if (!adminToken) {
+      navigate("/admin/login", { replace: true });
+    }
+  }, [navigate]);
+
+  // Admin customer list fetch ചെയ്യുക
+  const fetchUsers = async (page = 1, searchValue = search) => {
     try {
-      const response = await api.get("auth/admin/users/", {
+      setLoading(true);
+      setError("");
+
+      const response = await adminApi.get("auth/admin/users/", {
         params: {
-          page: pageNumber,
+          page,
           search: searchValue,
-        },
-        headers: {
-          Authorization: `Bearer ${access}`,
         },
       });
 
-      setUsers(response.data.results || []);
-      setCount(response.data.count || 0);
-      setNext(response.data.next);
-      setPrevious(response.data.previous);
-      setPage(pageNumber);
+      const data = response.data;
 
+      // Django REST Framework pagination response
+      if (Array.isArray(data.results)) {
+        setUsers(data.results);
+        setTotalUsers(data.count || 0);
+
+        const calculatedPages = Math.ceil(
+          (data.count || 0) / 10
+        );
+
+        setTotalPages(Math.max(1, calculatedPages));
+      } else if (Array.isArray(data)) {
+        // Pagination ഇല്ലാത്ത response ആണെങ്കിൽ
+        setUsers(data);
+        setTotalUsers(data.length);
+        setTotalPages(1);
+      } else {
+        setUsers([]);
+        setTotalUsers(0);
+        setTotalPages(1);
+      }
+
+      setCurrentPage(page);
     } catch (err) {
+      console.error("ADMIN USERS FETCH ERROR:", err);
+
       if (
         err.response?.status === 401 ||
         err.response?.status === 403
       ) {
-        localStorage.removeItem("access");
-        localStorage.removeItem("refresh");
+        localStorage.removeItem("admin_access");
+        localStorage.removeItem("admin_refresh");
+
+        window.dispatchEvent(new Event("authChanged"));
 
         navigate("/admin/login", { replace: true });
-
-      } else {
-        setError("Unable to load customers. Please try again.");
+        return;
       }
 
+      setError(
+        err.response?.data?.detail ||
+        "Unable to load customers. Please try again."
+      );
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (!access) {
-      navigate("/admin/login", { replace: true });
-      return;
-    }
-
     fetchUsers(1, "");
   }, []);
 
+  // Search
   const handleSearch = (e) => {
     e.preventDefault();
     fetchUsers(1, search);
   };
 
-  const handleStatus = async (user) => {
+  // Search clear
+  const handleClearSearch = () => {
+    setSearch("");
+    fetchUsers(1, "");
+  };
+
+  // Block / Unblock customer
+  const handleToggleStatus = async (user) => {
     const action = user.is_blocked ? "unblock" : "block";
 
-    if (
-      !window.confirm(
-        `Are you sure you want to ${action} this customer?`
-      )
-    ) {
-      return;
-    }
+    const confirmed = window.confirm(
+      `Are you sure you want to ${action} this customer?`
+    );
+
+    if (!confirmed) return;
 
     try {
-      await api.patch(
+      await adminApi.patch(
         `auth/admin/users/${user.id}/status/`,
-        { is_blocked: !user.is_blocked },
         {
-          headers: {
-            Authorization: `Bearer ${access}`,
-          },
+          is_blocked: !user.is_blocked,
         }
       );
 
-      fetchUsers(page, search);
-
+      // Update the customer list after successful request
+      await fetchUsers(currentPage, search);
     } catch (err) {
+      console.error("CUSTOMER STATUS UPDATE ERROR:", err);
+
+      if (
+        err.response?.status === 401 ||
+        err.response?.status === 403
+      ) {
+        localStorage.removeItem("admin_access");
+        localStorage.removeItem("admin_refresh");
+
+        window.dispatchEvent(new Event("authChanged"));
+
+        navigate("/admin/login", { replace: true });
+        return;
+      }
+
       alert(
         err.response?.data?.detail ||
         "Unable to update customer status."
@@ -104,230 +167,396 @@ function AdminDashboard() {
     }
   };
 
+  // Pagination
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      fetchUsers(currentPage - 1, search);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      fetchUsers(currentPage + 1, search);
+    }
+  };
+
+  // Admin logout
   const handleLogout = () => {
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
+    const confirmed = window.confirm(
+      "Are you sure you want to logout?"
+    );
+
+    if (!confirmed) return;
+
+    // Remove only admin tokens
+    localStorage.removeItem("admin_access");
+    localStorage.removeItem("admin_refresh");
+
+    window.dispatchEvent(new Event("authChanged"));
 
     navigate("/admin/login", { replace: true });
   };
 
-  const blockedCount = users.filter(
-    (user) => user.is_blocked
-  ).length;
+  const navigationItems = [
+    {
+      name: "Dashboard",
+      path: "/admin/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      name: "Customers",
+      path: "/admin/customers",
+      icon: Users,
+    },
+    {
+      name: "Categories",
+      path: "/admin/categories",
+      icon: Tags,
+    },
+    {
+      name: "Colors",
+      path: "/admin/colors",
+      icon: Palette,
+    },
+    {
+      name: "Sizes",
+      path: "/admin/sizes",
+      icon: Ruler,
+    },
+    {
+      name: "Product Management",
+      path: "/admin/products",
+      icon: Package,
+    },
+    {
+      name: "Product Variants",
+      path: "/admin/product-variants",
+      icon: Layers,
+    },
+    {
+      name: "Order Management",
+      path: "/admin/orders",
+      icon: ShoppingBag,
+    },
+    {
+      name: "Return Requests",
+      path: "/admin/returns",
+      icon: RotateCcw,
+    },
+  ];
 
   return (
     <div className="admin-dashboard">
 
-      <aside className="admin-sidebar">
-        <h2>STYLO</h2>
+      {/* Mobile menu button */}
+      <button
+        className="admin-mobile-menu"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        type="button"
+      >
+        {sidebarOpen ? <X /> : <Menu />}
+      </button>
 
-        <p className="admin-sidebar-label">
-          ADMIN PANEL
-        </p>
+      {/* Sidebar */}
+      <aside
+        className={`admin-sidebar ${
+          sidebarOpen ? "sidebar-open" : ""
+        }`}
+      >
+        <div className="admin-logo">
+          <h2>STYLO</h2>
+          <span>ADMIN PANEL</span>
+        </div>
 
-        <nav>
-          <button className="sidebar-active">
-            Dashboard
-          </button>
+        <nav className="admin-navigation">
+          {navigationItems.map((item) => {
+            const Icon = item.icon;
 
-          <button onClick={() => fetchUsers(1, "")}>
-            Customers
-          </button>
+            const isActive =
+              location.pathname === item.path;
+
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`admin-nav-link ${
+                  isActive ? "active" : ""
+                }`}
+                onClick={() => setSidebarOpen(false)}
+              >
+                <Icon size={19} />
+                <span>{item.name}</span>
+              </Link>
+            );
+          })}
         </nav>
 
         <button
-          className="admin-logout"
+          className="admin-logout-button"
           onClick={handleLogout}
+          type="button"
         >
-          Logout
+          <LogOut size={19} />
+          <span>Logout</span>
         </button>
       </aside>
 
-      <main className="admin-main">
+      {/* Main content */}
+      <main className="admin-main-content">
 
         <header className="admin-topbar">
           <div>
-            <h1>Dashboard</h1>
-            <p>
-              Welcome to your STYLO store management panel.
-            </p>
+            <h2>Admin Dashboard</h2>
+            <p>Welcome back to STYLO administration</p>
           </div>
 
-          <span className="admin-role">
-            Administrator
-          </span>
+          <div className="admin-profile">
+            <span className="admin-profile-icon">
+              A
+            </span>
+            <span>Administrator</span>
+          </div>
         </header>
 
-        <section className="admin-stats">
+        {/* Dashboard overview */}
+        <section className="admin-dashboard-content">
 
-          <div className="admin-stat-card">
-            <p>Total Customers</p>
-            <h2>{count}</h2>
-          </div>
-
-          <div className="admin-stat-card">
-            <p>Customers Loaded</p>
-            <h2>{users.length}</h2>
-          </div>
-
-          <div className="admin-stat-card">
-            <p>Blocked on This Page</p>
-            <h2>{blockedCount}</h2>
-          </div>
-
-        </section>
-
-        <section className="admin-customers">
-
-          <div className="admin-section-heading">
+          <div className="admin-welcome-section">
             <div>
-              <h2>Customer Management</h2>
+              <h2>Dashboard Overview</h2>
               <p>
-                View, search and manage customer accounts.
+                Manage your customers and store activities.
               </p>
             </div>
           </div>
 
-          <form
-            className="admin-search"
-            onSubmit={handleSearch}
-          >
-            <input
-              type="text"
-              placeholder="Search by name, email or phone..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+          {/* Statistics */}
+          <div className="admin-stats-container">
 
-            <button type="submit">
-              Search
-            </button>
+            <div className="admin-stat-card">
+              <div className="admin-stat-icon">
+                <Users size={24} />
+              </div>
 
-            <button
-              type="button"
-              className="admin-clear-button"
-              onClick={() => {
-                setSearch("");
-                fetchUsers(1, "");
-              }}
+              <div>
+                <p>Total Customers</p>
+                <h2>{totalUsers}</h2>
+              </div>
+            </div>
+
+            <div className="admin-stat-card">
+              <div className="admin-stat-icon">
+                <Package size={24} />
+              </div>
+
+              <div>
+                <p>Current Page</p>
+                <h2>{currentPage}</h2>
+              </div>
+            </div>
+
+            <div className="admin-stat-card">
+              <div className="admin-stat-icon">
+                <Layers size={24} />
+              </div>
+
+              <div>
+                <p>Total Pages</p>
+                <h2>{totalPages}</h2>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Customer management */}
+          <section className="admin-customers-section">
+
+            <div className="admin-section-header">
+              <div>
+                <h2>Customer Management</h2>
+                <p>
+                  View, search, and manage registered customers.
+                </p>
+              </div>
+
+              <span className="admin-customer-count">
+                {totalUsers} Customers
+              </span>
+            </div>
+
+            {/* Search */}
+            <form
+              className="admin-search-form"
+              onSubmit={handleSearch}
             >
-              Clear
-            </button>
-          </form>
+              <div className="admin-search-box">
+                <Search size={18} />
 
-          {error && (
-            <p className="admin-error">{error}</p>
-          )}
+                <input
+                  type="text"
+                  placeholder="Search by name, email or phone..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
 
-          {loading ? (
-            <p className="admin-loading">
-              Loading customers...
-            </p>
-          ) : (
-            <>
+              <button type="submit">
+                Search
+              </button>
 
-              <div className="admin-table-wrapper">
+              <button
+                type="button"
+                className="admin-clear-button"
+                onClick={handleClearSearch}
+              >
+                Clear
+              </button>
+            </form>
 
-                <table className="admin-table">
+            {/* Error */}
+            {error && (
+              <div className="admin-error-message">
+                {error}
+              </div>
+            )}
+
+            {/* Customer table */}
+            <div className="admin-table-container">
+
+              {loading ? (
+                <div className="admin-loading">
+                  Loading customers...
+                </div>
+              ) : users.length === 0 ? (
+                <div className="admin-empty-state">
+                  No customers found.
+                </div>
+              ) : (
+                <table className="admin-customers-table">
 
                   <thead>
                     <tr>
-                      <th>ID</th>
-                      <th>Username</th>
+                      <th>Customer</th>
                       <th>Email</th>
                       <th>Phone</th>
                       <th>Status</th>
+                      <th>Joined Date</th>
                       <th>Action</th>
                     </tr>
                   </thead>
 
                   <tbody>
-                    {users.length > 0 ? (
-                      users.map((user) => (
-                        <tr key={user.id}>
+                    {users.map((user) => (
+                      <tr key={user.id}>
 
-                          <td>{user.id}</td>
+                        <td>
+                          <div className="admin-customer-info">
+                            {user.profile_image ? (
+                              <img
+                                src={user.profile_image}
+                                alt={user.username || "Customer"}
+                                className="admin-customer-image"
+                              />
+                            ) : (
+                              <div className="admin-customer-avatar">
+                                {(user.username || user.email || "U")
+                                  .charAt(0)
+                                  .toUpperCase()}
+                              </div>
+                            )}
 
-                          <td>{user.username}</td>
-
-                          <td>{user.email}</td>
-
-                          <td>
-                            {user.phone_number || "—"}
-                          </td>
-
-                          <td>
-                            <span
-                              className={
-                                user.is_blocked
-                                  ? "status-blocked"
-                                  : "status-active"
-                              }
-                            >
-                              {user.is_blocked
-                                ? "Blocked"
-                                : "Active"}
+                            <span>
+                              {user.username ||
+                                user.first_name ||
+                                "Customer"}
                             </span>
-                          </td>
-
-                          <td>
-                            <button
-                              className={
-                                user.is_blocked
-                                  ? "unblock-button"
-                                  : "block-button"
-                              }
-                              onClick={() => handleStatus(user)}
-                            >
-                              {user.is_blocked
-                                ? "Unblock"
-                                : "Block"}
-                            </button>
-                          </td>
-
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan="6"
-                          className="admin-empty"
-                        >
-                          No customers found.
+                          </div>
                         </td>
+
+                        <td>{user.email || "-"}</td>
+
+                        <td>{user.phone_number || "-"}</td>
+
+                        <td>
+                          <span
+                            className={`admin-status-badge ${
+                              user.is_blocked
+                                ? "blocked"
+                                : "active"
+                            }`}
+                          >
+                            {user.is_blocked
+                              ? "Blocked"
+                              : "Active"}
+                          </span>
+                        </td>
+
+                        <td>
+                          {user.created_at
+                            ? new Date(
+                                user.created_at
+                              ).toLocaleDateString()
+                            : "-"}
+                        </td>
+
+                        <td>
+                          <button
+                            type="button"
+                            className={`admin-status-button ${
+                              user.is_blocked
+                                ? "unblock-button"
+                                : "block-button"
+                            }`}
+                            onClick={() =>
+                              handleToggleStatus(user)
+                            }
+                          >
+                            {user.is_blocked
+                              ? "Unblock"
+                              : "Block"}
+                          </button>
+                        </td>
+
                       </tr>
-                    )}
+                    ))}
                   </tbody>
 
                 </table>
+              )}
 
-              </div>
+            </div>
 
+            {/* Pagination */}
+            {!loading && users.length > 0 && (
               <div className="admin-pagination">
 
                 <button
-                  disabled={!previous}
-                  onClick={() => fetchUsers(page - 1)}
+                  type="button"
+                  onClick={handlePrevious}
+                  disabled={currentPage <= 1}
                 >
+                  <ChevronLeft size={18} />
                   Previous
                 </button>
 
-                <span>Page {page}</span>
+                <span>
+                  Page {currentPage} of {totalPages}
+                </span>
 
                 <button
-                  disabled={!next}
-                  onClick={() => fetchUsers(page + 1)}
+                  type="button"
+                  onClick={handleNext}
+                  disabled={currentPage >= totalPages}
                 >
                   Next
+                  <ChevronRight size={18} />
                 </button>
 
               </div>
+            )}
 
-            </>
-          )}
-
+          </section>
         </section>
-
       </main>
     </div>
   );

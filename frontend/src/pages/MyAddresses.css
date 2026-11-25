@@ -176,3 +176,277 @@
     padding: 22px;
   }
 }
+
+/* =========================================
+   STYLO HOME - NEW NAVBAR & COUPON STYLES
+========================================= */
+
+.stylo-coupon-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 7%;
+  background: #702d43;
+  color: #ffffff;
+}
+
+.stylo-coupon-banner > div:first-child {
+  max-width: 650px;
+}
+
+.stylo-coupon-banner span {
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+.stylo-coupon-banner h2 {
+  font-size: clamp(20px, 3vw, 30px);
+  margin: 8px 0;
+}
+
+.stylo-coupon-banner p {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.stylo-coupon-action {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.stylo-coupon-code {
+  background: #ffffff;
+  color: #702d43;
+  padding: 10px 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stylo-coupon-code span {
+  font-size: 9px;
+}
+
+.stylo-coupon-code strong {
+  font-size: 22px;
+  letter-spacing: 2px;
+}
+
+.stylo-coupon-action > button {
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  background: transparent;
+  border-radius: 8px;
+  padding: 13px 20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.stylo-coupon-action > button:hover {
+  background: #ffffff;
+  color: #702d43;
+}
+
+/* Profile dropdown */
+
+.stylo-profile-wrapper {
+  position: relative;
+}
+
+.stylo-profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #e8e0dc;
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 5px 12px 5px 5px;
+  cursor: pointer;
+  color: #292526;
+  max-width: 190px;
+}
+
+.stylo-navbar-avatar,
+.stylo-avatar-placeholder {
+  width: 35px;
+  height: 35px;
+  min-width: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.stylo-avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #702d43;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.stylo-profile-name {
+  max-width: 95px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.stylo-profile-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  z-index: 1000;
+  width: 230px;
+  padding: 10px;
+  background: #ffffff;
+  border: 1px solid #e8e0dc;
+  border-radius: 12px;
+  box-shadow: 0 12px 35px rgba(41, 37, 38, 0.13);
+  display: flex;
+  flex-direction: column;
+}
+
+.stylo-dropdown-user {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 12px;
+  border-bottom: 1px solid #e8e0dc;
+  margin-bottom: 5px;
+}
+
+.stylo-dropdown-user strong {
+  color: #702d43;
+}
+
+.stylo-dropdown-user span {
+  font-size: 12px;
+  color: #777777;
+  overflow-wrap: anywhere;
+}
+
+.stylo-profile-dropdown a,
+.stylo-profile-dropdown button {
+  padding: 11px 12px;
+  text-decoration: none;
+  color: #292526;
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.stylo-profile-dropdown a:hover,
+.stylo-profile-dropdown button:hover {
+  background: #faf7f2;
+  color: #702d43;
+}
+
+.stylo-profile-dropdown button {
+  color: #a52b40;
+  border-top: 1px solid #e8e0dc;
+  border-radius: 0;
+  margin-top: 5px;
+}
+
+/* Cart and wishlist count */
+
+.nav-icon {
+  position: relative;
+}
+
+.nav-count {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #702d43;
+  color: #ffffff;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .stylo-navbar {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .main-navigation {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .navbar-actions {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .stylo-coupon-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 22px 5%;
+  }
+
+  .stylo-coupon-action {
+    width: 100%;
+  }
+
+  .stylo-profile-name {
+    display: none;
+  }
+
+  .stylo-profile-trigger {
+    padding-right: 7px;
+  }
+
+  .navbar-actions {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .navbar-search {
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .main-navigation {
+    gap: 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 380px) {
+  .stylo-coupon-action {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .stylo-coupon-action > button {
+    width: 100%;
+  }
+}

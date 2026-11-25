@@ -1,0 +1,664 @@
+
+/* =========================================
+   STYLO - ORDER CONFIRMATION
+========================================= */
+
+.order-confirmation-page {
+  min-height: 100vh;
+  padding-bottom: 50px;
+  background: #faf7f2;
+  color: #292526;
+}
+
+/* =========================================
+   CHECKOUT PROGRESS
+========================================= */
+
+.oc-progress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 20px;
+}
+
+.oc-progress-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #888;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.oc-progress-number {
+  width: 23px;
+  height: 23px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: #e8e0dc;
+  color: #702d43;
+}
+
+.oc-progress-step.completed,
+.oc-progress-step.active {
+  color: #702d43;
+}
+
+.oc-progress-step.active .oc-progress-number {
+  background: #702d43;
+  color: #fff;
+}
+
+.oc-progress-line {
+  width: 30px;
+  height: 1px;
+  background: #c98f9d;
+}
+
+/* =========================================
+   SUCCESS HEADER
+========================================= */
+
+.oc-hero {
+  padding: 35px 20px;
+  text-align: center;
+}
+
+.oc-success-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 14px;
+  background: #f3dce1;
+  color: #702d43;
+  font-size: 38px;
+  font-weight: 600;
+}
+
+.oc-eyebrow {
+  color: #702d43;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.oc-hero h1 {
+  margin: 12px 0;
+  color: #702d43;
+  font-family: Georgia, serif;
+  font-size: clamp(28px, 4vw, 42px);
+}
+
+.oc-intro {
+  max-width: 700px;
+  margin: 0 auto;
+  color: #666;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* =========================================
+   ORDER REFERENCE
+========================================= */
+
+.oc-reference-card {
+  width: 90%;
+  max-width: 1150px;
+  margin: 0 auto 40px;
+  padding: 25px 30px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  background: #fff;
+  border: 1px solid #e8e0dc;
+  border-radius: 10px;
+}
+
+.oc-reference-item {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.oc-reference-item > span {
+  color: #666;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.oc-reference-item > strong,
+.oc-reference-value strong {
+  color: #702d43;
+  font-size: 16px;
+}
+
+.oc-reference-item small {
+  color: #777;
+  font-size: 12px;
+}
+
+.oc-reference-value {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.oc-reference-value button {
+  padding: 3px;
+  border: none;
+  background: transparent;
+  color: #702d43;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* =========================================
+   ORDER TRACKING ROADMAP
+========================================= */
+
+.oc-roadmap-section {
+  padding: 0 5%;
+  margin-bottom: 40px;
+}
+
+.oc-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.oc-section-heading h2,
+.oc-card-heading h2,
+.oc-payment-card h2,
+.oc-address-card h2 {
+  margin: 5px 0 0;
+  color: #292526;
+  font-family: Georgia, serif;
+  font-size: 23px;
+}
+
+.oc-current-status {
+  color: #702d43;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.oc-roadmap {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.oc-stage {
+  padding: 18px;
+  background: #fff;
+  border: 1px solid #e8e0dc;
+  border-radius: 10px;
+}
+
+.oc-stage.active {
+  border-color: #c98f9d;
+}
+
+.oc-stage.completed {
+  background: #f8f1f2;
+}
+
+.oc-stage-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+  color: #777;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.oc-stage-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background: #e8e0dc;
+  color: #702d43;
+}
+
+.oc-stage.active .oc-stage-icon,
+.oc-stage.completed .oc-stage-icon {
+  background: #702d43;
+  color: #fff;
+}
+
+.oc-stage h3 {
+  margin: 0 0 9px;
+  color: #702d43;
+  font-size: 15px;
+}
+
+.oc-stage p {
+  margin: 0;
+  color: #777;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.oc-stage small {
+  display: block;
+  margin-top: 10px;
+  color: #702d43;
+  font-size: 11px;
+}
+
+/* =========================================
+   ORDER DETAILS LAYOUT
+========================================= */
+
+.oc-details-layout {
+  display: grid;
+  grid-template-columns: 1.7fr 0.9fr;
+  align-items: start;
+  gap: 22px;
+  padding: 0 5%;
+}
+
+.oc-products-card,
+.oc-payment-card,
+.oc-address-card,
+.oc-actions-card {
+  padding: 22px;
+  background: #fff;
+  border: 1px solid #e8e0dc;
+  border-radius: 10px;
+}
+
+.oc-card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e8e0dc;
+}
+
+.oc-card-heading h2 {
+  font-size: 22px;
+}
+
+.oc-card-heading h2 small {
+  color: #777;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+
+.oc-invoice-link {
+  color: #702d43;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.oc-invoice-link:hover {
+  text-decoration: underline;
+}
+
+/* =========================================
+   ORDERED PRODUCTS
+========================================= */
+
+.oc-product-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid #e8e0dc;
+}
+
+.oc-product-item:last-child {
+  border-bottom: none;
+}
+
+.oc-product-image {
+  width: 100px;
+  height: 120px;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8f1f2;
+  border-radius: 7px;
+  color: #702d43;
+  font-size: 12px;
+}
+
+.oc-product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.oc-product-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.oc-product-info h3 {
+  margin: 4px 0 10px;
+  color: #292526;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.oc-product-info p {
+  margin: 0;
+  color: #777;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.oc-product-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.oc-product-meta span {
+  padding: 6px 9px;
+  background: #f8f1f2;
+  border-radius: 4px;
+  color: #702d43;
+  font-size: 11px;
+}
+
+.oc-product-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.oc-product-price strong {
+  color: #702d43;
+  font-size: 15px;
+}
+
+.oc-product-price del {
+  color: #888;
+  font-size: 12px;
+}
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.oc-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Payment Breakdown */
+
+.oc-payment-card h2,
+.oc-address-card h2 {
+  padding-bottom: 14px;
+  border-bottom: 1px solid #e8e0dc;
+  margin-bottom: 18px;
+}
+
+.oc-price-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 15px 0;
+  font-size: 13px;
+}
+
+.oc-price-row span {
+  color: #777;
+}
+
+.oc-price-row strong {
+  color: #292526;
+  text-align: right;
+}
+
+.oc-price-row.savings,
+.oc-price-row.savings strong {
+  color: #702d43;
+}
+
+.oc-total-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 17px;
+  margin-top: 18px;
+  border-top: 1px solid #e8e0dc;
+  color: #702d43;
+  font-size: 17px;
+}
+
+.oc-payment-status {
+  margin-top: 15px;
+  color: #777;
+  font-size: 12px;
+}
+
+.oc-savings-banner {
+  margin-top: 16px;
+  padding: 12px;
+  background: #f8f1f2;
+  border-radius: 5px;
+  color: #702d43;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Delivery Address */
+
+.oc-address-card strong {
+  color: #702d43;
+  font-size: 14px;
+}
+
+.oc-address-card p {
+  margin: 8px 0;
+  color: #777;
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+/* Customer Actions */
+
+.oc-actions-card h3 {
+  margin: 0 0 16px;
+  color: #702d43;
+  font-family: Georgia, serif;
+  font-size: 19px;
+}
+
+.oc-primary-btn,
+.oc-secondary-btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.oc-primary-btn {
+  margin-bottom: 10px;
+  background: #702d43;
+  border: 1px solid #702d43;
+  color: #fff;
+}
+
+.oc-primary-btn:hover {
+  background: #512033;
+}
+
+.oc-secondary-btn {
+  background: #fff;
+  border: 1px solid #702d43;
+  color: #702d43;
+}
+
+.oc-secondary-btn:hover {
+  background: #f8f1f2;
+}
+
+/* =========================================
+   LOADING AND ERROR STATES
+========================================= */
+
+.order-state {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  padding: 25px;
+  text-align: center;
+}
+
+.order-loader {
+  width: 38px;
+  height: 38px;
+  border: 4px solid #e8e0dc;
+  border-top-color: #702d43;
+  border-radius: 50%;
+  animation: oc-spin 0.8s linear infinite;
+}
+
+@keyframes oc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.order-error-icon {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: #f8f1f2;
+  color: #702d43;
+  font-size: 24px;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 1000px) {
+  .oc-details-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .oc-roadmap {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  .oc-progress {
+    justify-content: flex-start;
+    overflow-x: auto;
+    gap: 10px;
+  }
+
+  .oc-progress-step {
+    font-size: 10px;
+  }
+
+  .oc-progress-line {
+    width: 15px;
+  }
+
+  .oc-hero {
+    padding: 25px 15px;
+  }
+
+  .oc-reference-card {
+    grid-template-columns: 1fr;
+    padding: 20px;
+    margin-bottom: 30px;
+  }
+
+  .oc-section-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .oc-roadmap {
+    grid-template-columns: 1fr;
+  }
+
+  .oc-details-layout {
+    padding: 0 4%;
+  }
+
+  .oc-products-card,
+  .oc-payment-card,
+  .oc-address-card,
+  .oc-actions-card {
+    padding: 16px;
+  }
+
+  .oc-card-heading h2 {
+    font-size: 18px;
+  }
+
+  .oc-product-item {
+    gap: 10px;
+  }
+
+  .oc-product-image {
+    width: 75px;
+    height: 95px;
+  }
+
+  .oc-product-info h3 {
+    font-size: 13px;
+  }
+
+  .oc-product-info p {
+    font-size: 11px;
+  }
+
+  .oc-product-price strong {
+    font-size: 13px;
+  }
+
+  .oc-product-meta span {
+    font-size: 10px;
+  }
+
+  .oc-current-status {
+    font-size: 10px;
+  }
+}

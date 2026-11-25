@@ -1,140 +1,477 @@
-.auth-flow-container,
+
+/* =====================================
+   STYLO - AUTHENTICATION FLOW
+   EMERALD GREEN LUXURY THEME
+===================================== */
+
+:root {
+  --primary: #123C31;
+  --primary-dark: #0B2D24;
+  --primary-light: #EAF2EE;
+
+  --accent: #C5A66A;
+  --accent-light: #F6F0E3;
+
+  --surface: #FAF8F2;
+  --white: #FFFFFF;
+
+  --border-color: #E3E5DF;
+
+  --text-primary: #242B27;
+  --text-secondary: #727A74;
+  --placeholder: #A0A69F;
+
+  --error: #C0392B;
+  --error-bg: #FFF1EF;
+  --success: #237A4B;
+  --success-bg: #EDF7F0;
+
+  --heading-font: 'Playfair Display', Georgia, serif;
+  --body-font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* =====================================
+   MAIN CONTAINER
+===================================== */
+
+.auth-flow-container {
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 35px 24px;
+  box-sizing: border-box;
+}
+
+/* =====================================
+   HEADINGS & SUBTITLES
+===================================== */
+
+.auth-flow-container h1 {
+  font-family: var(--heading-font);
+  font-size: 34px;
+  font-weight: 500;
+  color: var(--primary-dark);
+  line-height: 1.3;
+  margin: 0 0 12px;
+  text-align: left;
+}
+
+.auth-flow-subtitle {
+  color: var(--text-secondary);
+  font-family: var(--body-font);
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0 0 24px;
+}
+
+/* =====================================
+   EMAIL DISPLAY
+===================================== */
+
+.auth-flow-email {
+  display: inline-block;
+  background-color: var(--primary-light);
+  color: var(--primary);
+  font-family: var(--body-font);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 14px;
+  border-radius: 7px;
+  margin-bottom: 22px;
+  word-break: break-word;
+}
+
+/* =====================================
+   FORM ELEMENTS
+===================================== */
+
+.auth-flow-container form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0;
+}
+
+.auth-flow-container form label {
+  font-family: var(--body-font);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  margin-bottom: 9px;
+}
+
+/* INPUT */
+
+.auth-flow-container form input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px 16px;
+  margin-bottom: 20px;
+
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+
+  font-family: var(--body-font);
+  font-size: 14px;
+  color: var(--text-primary);
+
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.auth-flow-container form input::placeholder {
+  color: var(--placeholder);
+}
+
+.auth-flow-container form input:hover {
+  border-color: #AABBB1;
+}
+
+.auth-flow-container form input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(18, 60, 49, 0.10);
+  background: var(--white);
+}
+
+/* =====================================
+   SUBMIT BUTTON
+===================================== */
+
+.auth-flow-container form button[type="submit"] {
+  width: 100%;
+  min-height: 50px;
+  padding: 15px 18px;
+  margin-top: 5px;
+
+  background: var(--primary);
+  color: var(--white);
+
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+
+  font-family: var(--body-font);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.auth-flow-container form button[type="submit"]:hover:not(:disabled) {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px rgba(11, 45, 36, 0.16);
+}
+
+.auth-flow-container form button[type="submit"]:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.auth-flow-container form button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* =====================================
+   STATUS MESSAGES
+===================================== */
+
+.auth-flow-error {
+  background-color: var(--error-bg);
+  border: 1px solid #F2D0CB;
+  color: var(--error);
+
+  font-size: 13px;
+  font-family: var(--body-font);
+
+  padding: 12px 14px;
+  border-radius: 8px;
+
+  margin: 0 0 18px;
+  line-height: 1.5;
+}
+
+.auth-flow-success {
+  background-color: var(--success-bg);
+  border: 1px solid #CBE6D3;
+  color: var(--success);
+
+  font-size: 13px;
+  font-family: var(--body-font);
+
+  padding: 12px 14px;
+  border-radius: 8px;
+
+  margin: 0 0 18px;
+  line-height: 1.5;
+}
+
+/* =====================================
+   LINKS
+===================================== */
+
+.auth-flow-link {
+  text-align: center;
+  margin: 25px 0 0;
+
+  font-family: var(--body-font);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.auth-flow-link a {
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.auth-flow-link a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* =====================================
+   VERIFY EMAIL PAGE
+===================================== */
+
 .verify-container {
   width: 100%;
   max-width: 430px;
   margin: auto;
-  padding: 30px 0;
-}
-
-.auth-flow-container h1,
-.verify-container h1 {
-  font-size: 30px;
-  color: #292526;
-  margin-bottom: 12px;
-}
-
-.auth-flow-subtitle,
-.verify-subtitle {
-  color: #777;
-  line-height: 1.6;
-  margin-bottom: 15px;
-}
-
-.auth-flow-email,
-.verify-email {
-  color: #702D43;
-  font-weight: 600;
-  margin-bottom: 25px;
-  word-break: break-word;
-}
-
-.auth-flow-container form,
-.verify-container form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.auth-flow-container form label,
-.verify-container form label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #292526;
-}
-
-.auth-flow-container form input,
-.verify-container form input {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid #E8E0DC;
-  border-radius: 6px;
-  font-size: 15px;
-  outline: none;
+  padding: 35px 24px;
   box-sizing: border-box;
-}
-
-.verify-container form input {
-  font-size: 20px;
-  letter-spacing: 8px;
   text-align: center;
 }
 
-.auth-flow-container form input:focus,
-.verify-container form input:focus {
-  border-color: #702D43;
+.verify-container h1 {
+  font-family: var(--heading-font);
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--primary-dark);
+  margin: 0 0 16px;
+  line-height: 1.3;
 }
 
-.auth-flow-container form button,
-.verify-container form button {
-  width: 100%;
-  padding: 14px;
-  background: #702D43;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 15px;
+.verify-subtitle {
+  color: var(--text-secondary);
+  font-family: var(--body-font);
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0 0 8px;
+}
+
+.verify-email {
+  display: inline-block;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-family: var(--body-font);
+  font-size: 14px;
   font-weight: 600;
+  padding: 9px 14px;
+  border-radius: 7px;
+  margin: 5px 0 28px;
+  word-break: break-word;
+}
+
+.verify-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  width: 100%;
+  text-align: left;
+}
+
+.verify-container form label {
+  font-family: var(--body-font);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: -7px;
+}
+
+.verify-container form input {
+  width: 100%;
+  height: 58px;
+  padding: 12px 15px;
+  box-sizing: border-box;
+
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+
+  background: var(--white);
+  color: var(--text-primary);
+
+  font-family: var(--body-font);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 10px;
+  text-align: center;
+
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.verify-container form input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(18, 60, 49, 0.10);
+}
+
+.verify-container form button[type="submit"] {
+  width: 100%;
+  min-height: 50px;
+  padding: 14px 18px;
+  margin-top: 5px;
+
+  background: var(--primary);
+  color: var(--white);
+
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+
+  font-family: var(--body-font);
+  font-size: 14px;
+  font-weight: 700;
+
   cursor: pointer;
-  margin-top: 8px;
+  transition: all 0.25s ease;
 }
 
-.auth-flow-container form button:hover,
-.verify-container form button:hover {
-  background: #542033;
+.verify-container form button[type="submit"]:hover:not(:disabled) {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
 }
 
-.auth-flow-container form button:disabled,
 .verify-container form button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.auth-flow-error,
-.verify-error {
-  color: #d32f2f;
-  font-size: 13px;
-}
-
-.auth-flow-success,
+.verify-error,
 .verify-success {
-  color: green;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 13px;
+  border-radius: 7px;
+  font-family: var(--body-font);
   font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+  text-align: left;
 }
 
-.auth-flow-link {
-  text-align: center;
-  margin-top: 22px;
-  font-size: 14px;
-  color: #777;
+.verify-error {
+  color: var(--error);
+  background: var(--error-bg);
+  border: 1px solid #F2D0CB;
 }
 
-.auth-flow-link a,
-.verify-container > a {
-  color: #702D43;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.verify-container {
-  text-align: center;
+.verify-success {
+  color: var(--success);
+  background: var(--success-bg);
+  border: 1px solid #CBE6D3;
 }
 
 .resend-text {
-  margin-top: 25px;
+  margin: 27px 0 0;
   font-size: 14px;
-  color: #777;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  font-family: var(--body-font);
 }
 
 .resend-text button {
   border: none;
   background: none;
-  color: #702D43;
-  font-weight: 600;
+  padding: 3px 4px;
+  color: var(--primary);
+  font-family: var(--body-font);
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
+}
+
+.resend-text button:hover {
+  color: var(--accent);
+  text-decoration: underline;
 }
 
 .verify-container > a {
   display: inline-block;
-  margin-top: 20px;
+  margin-top: 22px;
+  color: var(--primary);
+  text-decoration: none;
+  font-family: var(--body-font);
   font-size: 14px;
+  font-weight: 600;
+}
+
+.verify-container > a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* =====================================
+   RESPONSIVE DESIGN
+===================================== */
+
+/* TABLET */
+
+@media (max-width: 900px) {
+  .auth-flow-container,
+  .verify-container {
+    padding: 28px 20px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 480px) {
+  .auth-flow-container {
+    padding: 24px 16px;
+  }
+
+  .auth-flow-container h1 {
+    font-size: 29px;
+  }
+
+  .auth-flow-subtitle {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  .auth-flow-container form input {
+    padding: 13px 14px;
+    font-size: 13px;
+    margin-bottom: 17px;
+  }
+
+  .auth-flow-container form button[type="submit"] {
+    padding: 14px;
+    font-size: 12px;
+  }
+
+  .verify-container {
+    padding: 24px 16px;
+  }
+
+  .verify-container h1 {
+    font-size: 27px;
+  }
+
+  .verify-container form input {
+    height: 54px;
+    font-size: 20px;
+    letter-spacing: 8px;
+  }
 }

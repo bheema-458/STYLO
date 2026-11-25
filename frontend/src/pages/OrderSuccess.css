@@ -1,0 +1,371 @@
+
+.order-success-page {
+  min-height: 100vh;
+  padding: 55px 20px;
+  background: #faf7f2;
+  color: #292526;
+  font-family: Arial, sans-serif;
+}
+
+.order-success-container {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.success-icon {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: #eaf2e9;
+  color: #527b57;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 22px;
+  font-size: 38px;
+  font-weight: 600;
+  animation: successPop 0.5s ease;
+}
+
+@keyframes successPop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-eyebrow {
+  color: #a66c7b;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+}
+
+.order-success-container > h1 {
+  color: #702d43;
+  font-family: Georgia, serif;
+  font-size: clamp(30px, 5vw, 43px);
+  font-weight: 500;
+  margin: 16px 0 12px;
+}
+
+.success-description {
+  max-width: 520px;
+  margin: 0 auto;
+  color: #858080;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.success-order-number {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 27px 0;
+  padding: 17px 35px;
+  background: #f5e9ed;
+  border: 1px dashed #c98f9d;
+  border-radius: 9px;
+}
+
+.success-order-number span {
+  color: #a66c7b;
+  font-size: 9px;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+.success-order-number strong {
+  color: #702d43;
+  font-size: 17px;
+  letter-spacing: 1px;
+}
+
+.success-details-card {
+  background: #fff;
+  border: 1px solid #e9e1dd;
+  border-radius: 13px;
+  padding: 28px;
+  text-align: left;
+  box-shadow: 0 6px 25px rgba(41, 37, 38, 0.035);
+}
+
+.success-card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.success-card-heading h2 {
+  color: #702d43;
+  font-family: Georgia, serif;
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.order-status {
+  background: #f1f5ec;
+  color: #57754f;
+  padding: 7px 13px;
+  border-radius: 20px;
+  text-transform: capitalize;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.success-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 23px;
+}
+
+.success-info-grid div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.success-info-grid span {
+  color: #99918f;
+  font-size: 11px;
+}
+
+.success-info-grid strong {
+  color: #3d3435;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.success-divider {
+  height: 1px;
+  background: #eee7e3;
+  margin: 25px 0;
+}
+
+.success-subheading {
+  color: #702d43;
+  font-family: Georgia, serif;
+  font-size: 17px;
+  font-weight: 500;
+  margin: 0 0 15px;
+}
+
+.success-address strong {
+  color: #3d3435;
+  font-size: 13px;
+}
+
+.success-address p {
+  color: #817978;
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 6px 0;
+}
+
+.success-products {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+.success-product {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f0eae7;
+}
+
+.success-product:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.success-product-info {
+  min-width: 0;
+}
+
+.success-product-info strong {
+  color: #3d3435;
+  font-size: 13px;
+}
+
+.success-product-info p {
+  color: #99918f;
+  font-size: 11px;
+  margin: 6px 0 0;
+}
+
+.success-product > strong {
+  color: #702d43;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.success-price-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+  gap: 12px;
+  color: #827b7a;
+  font-size: 12px;
+}
+
+.success-price-row strong {
+  color: #3d3435;
+}
+
+.success-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid #e9e1dd;
+  padding-top: 20px;
+  margin-top: 20px;
+  color: #702d43;
+  font-size: 15px;
+}
+
+.success-total strong {
+  font-family: Georgia, serif;
+  font-size: 22px;
+}
+
+.success-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 28px auto;
+  color: #8a777b;
+}
+
+.success-message span {
+  color: #a66c7b;
+  font-size: 25px;
+}
+
+.success-message p {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.success-actions {
+  display: flex;
+  justify-content: center;
+  gap: 13px;
+  flex-wrap: wrap;
+}
+
+.success-primary-btn,
+.success-secondary-btn {
+  min-width: 180px;
+  padding: 14px 22px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.success-primary-btn {
+  border: 1px solid #702d43;
+  background: #702d43;
+  color: white;
+}
+
+.success-primary-btn:hover {
+  background: #512033;
+  transform: translateY(-2px);
+}
+
+.success-secondary-btn {
+  border: 1px solid #d9c8ce;
+  background: white;
+  color: #702d43;
+}
+
+.success-secondary-btn:hover {
+  background: #f8eff1;
+}
+
+.order-success-empty {
+  min-height: 75vh;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #faf7f2;
+  text-align: center;
+}
+
+.order-success-empty h2 {
+  color: #702d43;
+  font-family: Georgia, serif;
+}
+
+.order-success-empty p {
+  color: #888;
+  font-size: 13px;
+}
+
+.order-success-empty button {
+  margin-top: 15px;
+  background: #702d43;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  padding: 13px 23px;
+  cursor: pointer;
+}
+
+@media (max-width: 550px) {
+  .order-success-page {
+    padding: 35px 14px;
+  }
+
+  .success-details-card {
+    padding: 19px;
+  }
+
+  .success-info-grid {
+    gap: 19px 12px;
+  }
+
+  .success-card-heading h2 {
+    font-size: 19px;
+  }
+
+  .success-order-number {
+    padding: 15px 22px;
+  }
+
+  .success-order-number strong {
+    font-size: 14px;
+  }
+
+  .success-actions {
+    flex-direction: column;
+  }
+
+  .success-primary-btn,
+  .success-secondary-btn {
+    width: 100%;
+  }
+}

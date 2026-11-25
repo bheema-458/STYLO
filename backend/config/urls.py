@@ -22,41 +22,49 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import TokenRefreshView
 from django.conf import settings
 from django.conf.urls.static import static
+
 from accounts.views import (
     CustomTokenObtainPairView,
     ForgotPasswordView,
     ResetPasswordView,
 )
 
+
 urlpatterns = [
     path("admin/", admin.site.urls),
 
+    # Accounts APIs
     path("api/auth/", include("accounts.urls")),
 
+    # Authentication APIs
     path(
         "api/auth/login/",
         CustomTokenObtainPairView.as_view(),
         name="token_obtain_pair",
     ),
-
     path(
         "api/auth/token/refresh/",
         TokenRefreshView.as_view(),
         name="token_refresh",
     ),
-
     path(
         "api/auth/forgot-password/",
         ForgotPasswordView.as_view(),
         name="forgot-password",
     ),
-
     path(
         "api/auth/reset-password/",
         ResetPasswordView.as_view(),
         name="reset-password",
     ),
+
+    # Products APIs
+    path("api/", include("products.urls")),
+    path("api/", include("cart.urls")),
+    path("api/", include("wishlist.urls")),
+    path('api/orders/', include('orders.urls')),
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(

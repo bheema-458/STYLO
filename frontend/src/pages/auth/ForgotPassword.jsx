@@ -45,13 +45,22 @@ function ForgotPassword() {
         );
       }, 1500);
     } catch (err) {
-      const data = err.response?.data;
+  console.log("FORGOT PASSWORD ERROR:", err);
+  console.log("ERROR RESPONSE:", err.response);
+  console.log("ERROR DATA:", err.response?.data);
+  console.log("ERROR STATUS:", err.response?.status);
 
-      setError(
-        data?.detail ||
-        data?.email?.[0] ||
-        "Unable to process your request. Please try again."
-      );
+  const data = err.response?.data;
+
+  setError(
+    data?.detail ||
+    data?.message ||
+    data?.email?.[0] ||
+    data?.error ||
+    err.message ||
+    "Unable to process your request. Please try again."
+  );
+
     } finally {
       setLoading(false);
     }

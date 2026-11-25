@@ -13,7 +13,8 @@ class User(AbstractUser):
     profile_image = models.ImageField(
     upload_to="profile_images/",
     blank=True,
-    null=True
+    null=True,
+
 )
 
     is_blocked = models.BooleanField(default=False)
@@ -79,3 +80,4 @@ class EmailOTP(models.Model):
 
     def __str__(self):
         return f"OTP for {self.user.email} - {self.purpose}"
+    

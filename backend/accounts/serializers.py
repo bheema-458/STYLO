@@ -2,6 +2,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
+from accounts.services.password_service import change_user_password
 
 from django.contrib.auth import get_user_model
 from .models import Address
@@ -116,15 +117,6 @@ class PasswordChangeSerializer(serializers.Serializer):
 
         validate_password(value, user)
         return value
-
-    def save(self, **kwargs):
-        user = self.context["request"].user
-        user.set_password(self.validated_data["new_password"])
-        user.save(update_fields=["password"])
-        return user
-    
-
-
 
 
 class AddressSerializer(serializers.ModelSerializer):

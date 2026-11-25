@@ -1,4 +1,3 @@
-
 /* =====================================
    STYLO - PREMIUM REGISTER PAGE
 ===================================== */
@@ -6,8 +5,9 @@
 .register-container {
   width: 100%;
   max-width: 430px;
-  margin: auto;
+  margin: 0 auto;
   padding: 25px 0;
+  box-sizing: border-box;
 }
 
 /* HEADING */
@@ -38,7 +38,8 @@
 
 /* LABELS */
 
-.register-container form label {
+.register-container form label,
+.register-container form > label {
   font-family: var(--body-font);
   font-size: 13px;
   font-weight: 600;
@@ -49,6 +50,7 @@
 
 .register-container form input {
   width: 100%;
+  box-sizing: border-box;
   padding: 14px;
 
   background: var(--surface);
@@ -71,13 +73,20 @@
 
 .register-container form input:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(201, 133, 150, 0.12);
+  box-shadow: 0 0 0 3px rgba(209, 93, 122, 0.12);
+}
+
+/* SPECIFIC WRAPPER INJECTION SUPPORT */
+.auth-input-wrapper input {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* REGISTER BUTTON */
 
 .register-submit {
   width: 100%;
+  box-sizing: border-box;
   padding: 15px;
 
   background: var(--primary);
@@ -108,16 +117,14 @@
   transform: none;
 }
 
-/* ERROR MESSAGE */
+/* ERROR & SUCCESS MESSAGES */
 
 .register-error {
-  color: #C03945;
+  color: #e1d5d6;
   font-size: 13px;
   font-family: var(--body-font);
   margin-top: 5px;
 }
-
-/* SUCCESS MESSAGE */
 
 .register-success {
   color: #47775C;
@@ -147,18 +154,35 @@
   color: var(--deep-plum);
 }
 
-/* MOBILE */
+/* =====================================
+   RESPONSIVE MEDIA QUERIES (REGISTER)
+===================================== */
+
+@media (max-width: 900px) {
+  .register-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px;
+  }
+}
 
 @media (max-width: 480px) {
   .register-container {
-    padding: 15px 0;
+    padding: 15px 10px;
   }
 
   .register-container h1 {
-    font-size: 31px;
+    font-size: 26px;
   }
 
   .register-subtitle {
     margin-bottom: 20px;
+    font-size: 13px;
+  }
+
+  .auth-input-wrapper input,
+  .register-container form input {
+    padding: 12px 14px;
+    font-size: 13px;
   }
 }

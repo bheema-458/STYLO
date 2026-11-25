@@ -43,6 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    'products.apps.ProductsConfig',
+    'orders',
+    'cart',
+    'wishlist.apps.WishlistConfig',
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
@@ -95,7 +99,8 @@ DATABASES = {
     }
 }
 
-
+RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
 
 # Password validation
 # https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators
@@ -160,12 +165,12 @@ REST_FRAMEWORK = {
     ],
 
     'DEFAULT_THROTTLE_RATES': {
-        'login': '5/minute',
-        'registration': '5/hour',
-        'forgot_password': '3/hour',
-        'reset_password': '5/hour',
-        'resend_otp': '3/minute',
-    },
+    'login': '10/minute',
+    'registration': '5/hour',
+    'forgot_password': '5/hour',
+    'reset_password': '10/hour',
+    'resend_otp': '3/minute',
+},
 }
 # Gmail Email Configuration
 

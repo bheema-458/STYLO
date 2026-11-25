@@ -1,0 +1,1180 @@
+
+/* =========================================================
+   STYLO - PREMIUM CHECKOUT PAGE
+   Theme: Emerald Green | Gold | White
+========================================================= */
+
+:root {
+  --checkout-emerald: #176b48;
+  --checkout-dark: #103d2b;
+  --checkout-deep: #092d20;
+  --checkout-light: #eaf4ed;
+  --checkout-pale: #f5f9f5;
+  --checkout-gold: #c49a45;
+  --checkout-gold-light: #fff7e8;
+  --checkout-white: #ffffff;
+  --checkout-text: #263a30;
+  --checkout-muted: #78867d;
+  --checkout-border: #e1e9e2;
+  --checkout-danger: #b33a3a;
+  --checkout-success: #23834f;
+  --checkout-shadow: 0 8px 30px rgba(16, 61, 43, 0.06);
+  --checkout-radius: 16px;
+}
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+.stylo-checkout-page,
+.stylo-checkout-page * {
+  box-sizing: border-box;
+}
+
+.stylo-checkout-page {
+  min-height: 100vh;
+  padding: 38px 5% 75px;
+  background:
+    radial-gradient(
+      circle at 5% 5%,
+      rgba(196, 154, 69, 0.06),
+      transparent 25%
+    ),
+    #f7f9f6;
+  color: var(--checkout-text);
+  font-family: inherit;
+}
+
+.stylo-checkout-page button,
+.stylo-checkout-page input,
+.stylo-checkout-page textarea {
+  font-family: inherit;
+}
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.stylo-checkout-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.stylo-checkout-top {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-bottom: 32px;
+}
+
+.stylo-back-button {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 16px;
+  border: 1px solid var(--checkout-border);
+  border-radius: 9px;
+  background: var(--checkout-white);
+  color: var(--checkout-dark);
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.stylo-back-button:hover {
+  border-color: var(--checkout-emerald);
+  background: var(--checkout-light);
+  transform: translateX(-3px);
+}
+
+.stylo-checkout-top h1 {
+  margin: 0 0 8px;
+  color: var(--checkout-dark);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(29px, 4vw, 38px);
+  font-weight: 700;
+  letter-spacing: -0.7px;
+}
+
+.stylo-checkout-top p {
+  margin: 0;
+  color: var(--checkout-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* =========================================================
+   MAIN GRID
+========================================================= */
+
+.stylo-checkout-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(330px, 0.85fr);
+  gap: 27px;
+  align-items: start;
+}
+
+.stylo-checkout-left {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* =========================================================
+   CHECKOUT CARDS
+========================================================= */
+
+.stylo-checkout-card,
+.stylo-order-summary {
+  padding: 27px;
+  background: var(--checkout-white);
+  border: 1px solid var(--checkout-border);
+  border-radius: var(--checkout-radius);
+  box-shadow: var(--checkout-shadow);
+}
+
+.stylo-checkout-card {
+  transition:
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.stylo-checkout-card:hover {
+  border-color: #d2e3d6;
+  box-shadow: 0 12px 35px rgba(16, 61, 43, 0.075);
+}
+
+/* =========================================================
+   SECTION HEADINGS
+========================================================= */
+
+.stylo-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 25px;
+}
+
+.stylo-heading-icon {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 13px;
+  background: var(--checkout-light);
+  color: var(--checkout-emerald);
+}
+
+.stylo-section-heading h2 {
+  margin: 0 0 5px;
+  color: var(--checkout-dark);
+  font-size: 19px;
+  font-weight: 750;
+}
+
+.stylo-section-heading p {
+  margin: 0;
+  color: var(--checkout-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   ADDRESS LIST
+========================================================= */
+
+.stylo-address-list {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin-bottom: 18px;
+}
+
+.stylo-address-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 19px;
+  border: 1px solid var(--checkout-border);
+  border-radius: 12px;
+  background: #fff;
+  transition: all 0.25s ease;
+}
+
+.stylo-address-card:hover {
+  border-color: #b9d5c1;
+  background: #fbfdfb;
+}
+
+.stylo-address-card.selected {
+  border: 1.5px solid var(--checkout-emerald);
+  background: #f3faf5;
+  box-shadow: 0 4px 15px rgba(23, 107, 72, 0.07);
+}
+
+.stylo-address-select {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.stylo-address-select input {
+  width: 17px;
+  height: 17px;
+  margin-top: 3px;
+  accent-color: var(--checkout-emerald);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.stylo-address-details {
+  min-width: 0;
+  flex: 1;
+}
+
+.stylo-address-name {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 8px;
+}
+
+.stylo-address-name strong {
+  color: var(--checkout-dark);
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.stylo-address-details p {
+  margin: 4px 0;
+  color: var(--checkout-muted);
+  font-size: 12px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.stylo-default-badge,
+.stylo-temporary-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 9px;
+  border-radius: 30px;
+  background: var(--checkout-light);
+  color: var(--checkout-emerald);
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.stylo-temporary-badge {
+  background: var(--checkout-gold-light);
+  color: #93651b;
+}
+
+.stylo-edit-address-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 11px;
+  border: none;
+  border-radius: 8px;
+  background: var(--checkout-light);
+  color: var(--checkout-emerald);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.stylo-edit-address-button:hover {
+  background: #d7eadc;
+  transform: translateY(-1px);
+}
+
+.temporary-address-card {
+  margin-bottom: 15px;
+}
+
+/* =========================================================
+   ADD ADDRESS BUTTON
+========================================================= */
+
+.stylo-add-address-button {
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 1.5px dashed var(--checkout-emerald);
+  border-radius: 10px;
+  background: #f8fcf9;
+  color: var(--checkout-emerald);
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.stylo-add-address-button:hover {
+  border-style: solid;
+  background: var(--checkout-light);
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   ADDRESS FORM
+========================================================= */
+
+.stylo-address-form {
+  margin-top: 21px;
+  padding: 22px;
+  border: 1px solid var(--checkout-border);
+  border-radius: 12px;
+  background: #fbfdfb;
+  animation: checkoutFadeIn 0.3s ease;
+}
+
+.stylo-address-form h3 {
+  margin: 0 0 20px;
+  color: var(--checkout-dark);
+  font-size: 17px;
+  font-weight: 750;
+}
+
+.stylo-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.stylo-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.stylo-form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.stylo-form-group label {
+  color: var(--checkout-text);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.stylo-form-group input,
+.stylo-form-group textarea {
+  width: 100%;
+  min-height: 45px;
+  padding: 12px 14px;
+  border: 1px solid var(--checkout-border);
+  border-radius: 8px;
+  outline: none;
+  background: #fff;
+  color: var(--checkout-text);
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.stylo-form-group input::placeholder,
+.stylo-form-group textarea::placeholder {
+  color: #a5b0a8;
+}
+
+.stylo-form-group textarea {
+  min-height: 90px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.stylo-form-group input:focus,
+.stylo-form-group textarea:focus {
+  border-color: var(--checkout-emerald);
+  box-shadow: 0 0 0 3px rgba(23, 107, 72, 0.09);
+  background: #fff;
+}
+
+.stylo-default-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 17px;
+  color: var(--checkout-muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.stylo-default-checkbox input {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--checkout-emerald);
+}
+
+.stylo-address-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 21px;
+}
+
+.stylo-primary-button,
+.stylo-save-address-button,
+.stylo-secondary-button {
+  min-height: 42px;
+  padding: 11px 17px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.stylo-primary-button,
+.stylo-save-address-button {
+  background: var(--checkout-emerald);
+  color: #fff;
+}
+
+.stylo-primary-button:hover,
+.stylo-save-address-button:hover {
+  background: var(--checkout-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px rgba(16, 61, 43, 0.15);
+}
+
+.stylo-secondary-button {
+  border-color: var(--checkout-border);
+  background: #fff;
+  color: var(--checkout-text);
+}
+
+.stylo-secondary-button:hover {
+  background: #f0f4f0;
+  border-color: #cbd9ce;
+}
+
+.stylo-address-hint {
+  margin: 14px 0 0;
+  color: var(--checkout-muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+/* =========================================================
+   PAYMENT METHODS
+========================================================= */
+
+.stylo-payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.stylo-payment-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--checkout-border);
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.stylo-payment-option:hover {
+  border-color: #b9d5c1;
+  background: #fbfdfb;
+}
+
+.stylo-payment-option.selected {
+  border: 1.5px solid var(--checkout-emerald);
+  background: #f4faf5;
+  box-shadow: 0 4px 14px rgba(23, 107, 72, 0.06);
+}
+
+.stylo-payment-option input {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--checkout-emerald);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.stylo-payment-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--checkout-light);
+  color: var(--checkout-emerald);
+  flex-shrink: 0;
+}
+
+.stylo-payment-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+}
+
+.stylo-payment-info strong {
+  color: var(--checkout-dark);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.stylo-payment-info span {
+  color: var(--checkout-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.stylo-payment-check {
+  color: var(--checkout-emerald);
+  flex-shrink: 0;
+}
+
+.stylo-upi-badge {
+  padding: 5px 10px;
+  border-radius: 30px;
+  background: var(--checkout-light);
+  color: var(--checkout-emerald);
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.stylo-upi-information {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  margin-top: 17px;
+  padding: 14px;
+  border-radius: 9px;
+  background: #f3faf5;
+  color: var(--checkout-emerald);
+}
+
+.stylo-upi-information svg {
+  flex-shrink: 0;
+}
+
+.stylo-upi-information p {
+  margin: 0;
+  color: var(--checkout-muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+/* =========================================================
+   ORDER SUMMARY
+========================================================= */
+
+.stylo-order-summary {
+  position: sticky;
+  top: 95px;
+  overflow: hidden;
+}
+
+.stylo-summary-heading {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding-bottom: 19px;
+  border-bottom: 1px solid var(--checkout-border);
+  color: var(--checkout-emerald);
+}
+
+.stylo-summary-heading h2 {
+  margin: 0;
+  color: var(--checkout-dark);
+  font-size: 19px;
+  font-weight: 750;
+}
+
+/* =========================================================
+   CHECKOUT PRODUCTS
+========================================================= */
+
+.stylo-checkout-products {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  padding: 21px 0;
+}
+
+.stylo-checkout-product {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+}
+
+.stylo-checkout-product-image {
+  width: 68px;
+  height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 1px solid var(--checkout-border);
+  border-radius: 9px;
+  background: var(--checkout-pale);
+  color: var(--checkout-emerald);
+}
+
+.stylo-checkout-product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.stylo-checkout-product:hover
+.stylo-checkout-product-image img {
+  transform: scale(1.06);
+}
+
+.stylo-checkout-product-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.stylo-checkout-product-info h3 {
+  margin: 0 0 6px;
+  color: var(--checkout-dark);
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.stylo-checkout-product-info p {
+  margin: 3px 0;
+  color: var(--checkout-muted);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.stylo-checkout-product-info .stylo-checkout-unit-price {
+  color: var(--checkout-emerald);
+  font-weight: 650;
+}
+
+.stylo-checkout-product-price {
+  color: var(--checkout-dark);
+  font-size: 12px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   PRICE CALCULATIONS
+========================================================= */
+
+.stylo-summary-calculations {
+  padding: 19px 0;
+  border-top: 1px solid var(--checkout-border);
+  border-bottom: 1px solid var(--checkout-border);
+}
+
+.stylo-summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 15px;
+  color: var(--checkout-muted);
+  font-size: 12px;
+}
+
+.stylo-summary-row:last-of-type {
+  margin-bottom: 0;
+}
+
+.stylo-summary-row strong {
+  color: var(--checkout-text);
+  font-weight: 700;
+}
+
+.stylo-free-shipping {
+  margin: -5px 0 15px;
+  color: var(--checkout-success);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.stylo-summary-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 17px;
+  margin-top: 16px;
+  border-top: 1px dashed var(--checkout-border);
+  color: var(--checkout-dark);
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.stylo-summary-total strong {
+  color: var(--checkout-emerald);
+  font-size: 23px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   DELIVERY NOTE
+========================================================= */
+
+.stylo-checkout-delivery-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0;
+  padding: 13px;
+  border-radius: 9px;
+  background: var(--checkout-light);
+  color: var(--checkout-emerald);
+}
+
+.stylo-checkout-delivery-note svg {
+  flex-shrink: 0;
+}
+
+.stylo-checkout-delivery-note span {
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   PLACE ORDER BUTTON
+========================================================= */
+
+.stylo-place-order-button {
+  width: 100%;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(
+    135deg,
+    var(--checkout-emerald),
+    var(--checkout-dark)
+  );
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  box-shadow: 0 7px 18px rgba(16, 61, 43, 0.16);
+  transition: all 0.25s ease;
+}
+
+.stylo-place-order-button:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    var(--checkout-dark),
+    var(--checkout-deep)
+  );
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(16, 61, 43, 0.22);
+}
+
+.stylo-place-order-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.stylo-place-order-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.place-order-arrow {
+  transform: rotate(180deg);
+}
+
+/* =========================================================
+   PAYMENT RETRY
+========================================================= */
+
+.stylo-payment-retry-box {
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid #efd9ad;
+  border-radius: 10px;
+  background: #fffaf0;
+}
+
+.stylo-payment-retry-box h3 {
+  margin: 0 0 8px;
+  color: #805c1e;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.stylo-payment-retry-box p {
+  margin: 0 0 13px;
+  color: var(--checkout-muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.stylo-payment-retry-box button {
+  width: 100%;
+  min-height: 40px;
+  border: none;
+  border-radius: 8px;
+  background: var(--checkout-gold);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.stylo-payment-retry-box button:hover:not(:disabled) {
+  background: #a98031;
+  transform: translateY(-1px);
+}
+
+.stylo-payment-retry-box button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   SECURE CHECKOUT
+========================================================= */
+
+.stylo-secure-checkout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+  color: var(--checkout-muted);
+  font-size: 10px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.stylo-secure-checkout svg {
+  color: var(--checkout-emerald);
+  flex-shrink: 0;
+}
+
+.stylo-checkout-tax-note {
+  margin: 12px 0 0;
+  color: #8b978e;
+  font-size: 10px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* =========================================================
+   ERROR AND SUCCESS MESSAGES
+========================================================= */
+
+.stylo-checkout-error,
+.stylo-checkout-success {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.6;
+  animation: checkoutFadeIn 0.25s ease;
+}
+
+.stylo-checkout-error {
+  border: 1px solid #f0caca;
+  background: #fff3f3;
+  color: var(--checkout-danger);
+}
+
+.stylo-checkout-success {
+  border: 1px solid #cce5d3;
+  background: #f0faf3;
+  color: var(--checkout-success);
+}
+
+.stylo-checkout-success svg {
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   LOADING AND EMPTY CART
+========================================================= */
+
+.stylo-checkout-loading,
+.stylo-checkout-empty {
+  min-height: 65vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 30px 20px;
+  color: var(--checkout-emerald);
+  text-align: center;
+}
+
+.stylo-checkout-loading p,
+.stylo-checkout-empty p {
+  margin: 0;
+  color: var(--checkout-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.stylo-checkout-empty h2 {
+  margin: 6px 0 0;
+  color: var(--checkout-dark);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 25px;
+}
+
+.stylo-checkout-empty .stylo-primary-button {
+  margin-top: 12px;
+  padding: 13px 23px;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+.spin-icon {
+  animation: checkoutSpin 1s linear infinite;
+}
+
+@keyframes checkoutSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes checkoutFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   TABLET RESPONSIVE
+========================================================= */
+
+@media (max-width: 1000px) {
+  .stylo-checkout-page {
+    padding: 30px 3% 55px;
+  }
+
+  .stylo-checkout-grid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(285px, 0.8fr);
+    gap: 17px;
+  }
+
+  .stylo-checkout-card,
+  .stylo-order-summary {
+    padding: 21px;
+  }
+
+  .stylo-checkout-product-image {
+    width: 58px;
+    height: 68px;
+  }
+}
+
+/* =========================================================
+   MOBILE RESPONSIVE
+========================================================= */
+
+@media (max-width: 720px) {
+  .stylo-checkout-page {
+    padding: 24px 4% 45px;
+  }
+
+  .stylo-checkout-top {
+    gap: 17px;
+    margin-bottom: 23px;
+  }
+
+  .stylo-checkout-grid {
+    grid-template-columns: 1fr;
+    gap: 19px;
+  }
+
+  .stylo-order-summary {
+    position: static;
+  }
+
+  .stylo-checkout-top h1 {
+    font-size: 29px;
+  }
+
+  .stylo-checkout-top p {
+    font-size: 12px;
+  }
+
+  .stylo-checkout-card,
+  .stylo-order-summary {
+    padding: 19px;
+    border-radius: 13px;
+  }
+
+  .stylo-section-heading h2 {
+    font-size: 17px;
+  }
+
+  .stylo-address-form {
+    padding: 16px;
+  }
+
+  .stylo-address-form-actions {
+    flex-direction: column;
+  }
+
+  .stylo-address-form-actions button {
+    width: 100%;
+  }
+
+  .stylo-payment-option {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .stylo-payment-icon {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 460px) {
+  .stylo-checkout-page {
+    padding: 20px 13px 35px;
+  }
+
+  .stylo-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stylo-form-group.full-width {
+    grid-column: auto;
+  }
+
+  .stylo-address-card {
+    gap: 8px;
+    padding: 13px;
+  }
+
+  .stylo-address-name {
+    gap: 6px;
+  }
+
+  .stylo-address-name strong {
+    font-size: 12px;
+  }
+
+  .stylo-address-details p {
+    font-size: 11px;
+  }
+
+  .stylo-edit-address-button {
+    padding: 7px;
+    font-size: 10px;
+  }
+
+  .stylo-payment-info strong {
+    font-size: 11px;
+  }
+
+  .stylo-payment-info span {
+    font-size: 10px;
+  }
+
+  .stylo-payment-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .stylo-upi-badge {
+    padding: 4px 7px;
+    font-size: 9px;
+  }
+
+  .stylo-summary-total strong {
+    font-size: 20px;
+  }
+
+  .stylo-checkout-product-image {
+    width: 53px;
+    height: 63px;
+  }
+
+  .stylo-checkout-product-price {
+    font-size: 11px;
+  }
+
+  .stylo-checkout-product-info h3 {
+    font-size: 11px;
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+.stylo-checkout-page button:focus-visible,
+.stylo-checkout-page input:focus-visible,
+.stylo-checkout-page textarea:focus-visible {
+  outline: 2px solid var(--checkout-gold);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stylo-checkout-page *,
+  .stylo-checkout-page *::before,
+  .stylo-checkout-page *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
